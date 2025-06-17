@@ -1,4 +1,4 @@
-# openBIS Chatbot
+# chatBIS
 
 A RAG-based chatbot with memory for the openBIS documentation, powered by LangGraph and Ollama.
 
@@ -226,8 +226,8 @@ The web interface works by:
 ## Project Structure
 
 ```
-openbis-chatbot/
-├── src/openbis_chatbot/          # Main package
+chatBIS/
+├── src/chatBIS/          # Main package
 │   ├── scraper/                  # Web scraping components
 │   ├── processor/                # Content processing components
 │   ├── query/                    # Query and conversation engine
