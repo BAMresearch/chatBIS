@@ -256,6 +256,11 @@ chatBIS/
 - **Conversation limit**: 20 messages (10 exchanges) per session
 - **Storage**: SQLite database for persistent conversation history
 
+## Sources
+
+- [**RAG system**](https://github.com/carlosmada22/ragBIS)
+- [**Chatbot interface**](https://github.com/carlosmada22/openbis-chatbot)
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
