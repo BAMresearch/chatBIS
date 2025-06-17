@@ -1,3 +1,5 @@
+![Python](https://img.shields.io/badge/python-3.8+-yellow) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) 	![GitHub Repo stars](https://img.shields.io/github/stars/BAMresearch/chatBIS) ![Last Commit](https://img.shields.io/github/last-commit/BAMresearch/chatBIS) 
+
 # chatBIS
 
 A RAG-based chatbot with memory for the openBIS documentation, powered by LangGraph and Ollama.
