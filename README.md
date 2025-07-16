@@ -1,4 +1,6 @@
-# openBIS Chatbot
+![Python](https://img.shields.io/badge/python-3.8+-yellow) [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) 	![GitHub Repo stars](https://img.shields.io/github/stars/BAMresearch/chatBIS) ![Last Commit](https://img.shields.io/github/last-commit/BAMresearch/chatBIS) 
+
+# chatBIS
 
 A RAG-based chatbot with memory for the openBIS documentation, powered by LangGraph and Ollama.
 
@@ -272,8 +274,8 @@ The web interface works by:
 ## Project Structure
 
 ```
-openbis-chatbot/
-├── src/openbis_chatbot/          # Main package
+chatBIS/
+├── src/chatBIS/          # Main package
 │   ├── scraper/                  # Web scraping components
 │   ├── processor/                # Content processing components
 │   ├── query/                    # Query and conversation engine
@@ -305,6 +307,11 @@ openbis-chatbot/
 - **RAG context**: ~500-600 tokens per query
 - **Conversation limit**: 20 messages (10 exchanges) per session
 - **Storage**: SQLite database for persistent conversation history
+
+## Sources
+
+- [**RAG system**](https://github.com/carlosmada22/ragBIS)
+- [**Chatbot interface**](https://github.com/carlosmada22/openbis-chatbot)
 
 ## License
 
