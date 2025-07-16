@@ -11,8 +11,16 @@ Based on pybis v1.37.3 documentation from:
 """
 
 import logging
+import os
 from typing import Dict, List, Any
 from langchain_core.tools import Tool
+
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass  # dotenv not available, continue without it
 
 logger = logging.getLogger(__name__)
 
@@ -73,6 +81,7 @@ class PyBISToolManager:
     def __init__(self):
         self.connection = _connection
         self.tools = self._create_tools()
+        self._auto_connect_attempted = False
 
     def connect(self, server_url: str, username: str, password: str, verify_certificates: bool = True) -> bool:
         """Connect to openBIS server."""
@@ -135,7 +144,7 @@ class PyBISToolManager:
         # === PROJECT MANAGEMENT ===
         tools.append(Tool(
             name="list_projects",
-            description="List projects in openBIS. Projects live within spaces and contain experiments. Optional parameters: space (string to filter by space)",
+            description="List projects in the user's space in openBIS. Projects live within spaces and contain experiments. Automatically filters by the user's own space unless space parameter is explicitly provided.",
             func=self._list_projects_tool
         ))
 
@@ -147,14 +156,14 @@ class PyBISToolManager:
 
         tools.append(Tool(
             name="create_project",
-            description="Create a new project in openBIS. Parameters: space (string), code (string), description (string, optional)",
+            description="Create a new project in the user's space in openBIS. Parameters: code (string), description (string, optional). Space defaults to user's own space.",
             func=self._create_project_tool
         ))
 
         # === EXPERIMENT/COLLECTION MANAGEMENT ===
         tools.append(Tool(
             name="list_experiments",
-            description="List experiments (collections) in openBIS. Optional parameters: space (string), project (string), experiment_type (string), limit (integer, default 10)",
+            description="List ALL experiments (collections) in the user's space in openBIS. Shows total count and all experiments by default. Automatically filters by the user's own space unless space parameter is explicitly provided. Optional parameters: project (string), experiment_type (string), limit (integer, only use when user asks for 'last N' or 'recent N' experiments)",
             func=self._list_experiments_tool
         ))
 
@@ -173,7 +182,7 @@ class PyBISToolManager:
         # === SAMPLE/OBJECT MANAGEMENT ===
         tools.append(Tool(
             name="list_samples",
-            description="List samples (objects) in openBIS. Optional parameters: sample_type (string), space (string), project (string), experiment (string), limit (integer, default 10)",
+            description="List ALL samples (objects) in the user's space in openBIS. Shows total count and all samples by default. Automatically filters by the user's own space unless space parameter is explicitly provided. Optional parameters: sample_type (string), project (string), experiment (string), limit (integer, only use when user asks for 'last N' or 'recent N' samples)",
             func=self._list_samples_tool
         ))
 
@@ -185,7 +194,7 @@ class PyBISToolManager:
 
         tools.append(Tool(
             name="create_sample",
-            description="Create a new sample in openBIS. Parameters: sample_type (string), space (string), code (string), experiment (string, optional), properties (dict, optional)",
+            description="Create a new sample in the user's space in openBIS. Parameters: sample_type (string), code (string), experiment (string, optional), properties (dict, optional). Space defaults to user's own space.",
             func=self._create_sample_tool
         ))
 
@@ -198,7 +207,7 @@ class PyBISToolManager:
         # === DATASET MANAGEMENT ===
         tools.append(Tool(
             name="list_datasets",
-            description="List datasets in openBIS. Datasets contain the actual data files. Optional parameters: dataset_type (string), sample (string), experiment (string), limit (integer, default 10)",
+            description="List datasets in openBIS. Datasets contain the actual data files. Optional parameters: dataset_type (string), sample (string), experiment (string), limit (integer, default 20)",
             func=self._list_datasets_tool
         ))
 
@@ -259,9 +268,47 @@ class PyBISToolManager:
 
         return tools
 
+    def _auto_connect_from_env(self):
+        """Attempt to auto-connect using environment variables."""
+        if self._auto_connect_attempted:
+            return False
+
+        self._auto_connect_attempted = True
+
+        # Get credentials from environment variables
+        server_url = os.getenv('OPENBIS_URL')
+        username = os.getenv('OPENBIS_USERNAME')
+        password = os.getenv('OPENBIS_PASSWORD')
+
+        if not all([server_url, username, password]):
+            logger.warning("openBIS credentials not found in environment variables. "
+                         "Set OPENBIS_URL, OPENBIS_USERNAME, and OPENBIS_PASSWORD to enable auto-connection.")
+            return False
+
+        logger.info(f"Attempting auto-connection to openBIS at {server_url} as {username}")
+        success = self.connection.connect(server_url, username, password, verify_certificates=True)
+
+        if success:
+            logger.info("Auto-connection to openBIS successful")
+        else:
+            logger.error("Auto-connection to openBIS failed")
+
+        return success
+
+    def _get_user_space(self):
+        """Get the user's space name from the username (uppercase)."""
+        username = os.getenv('OPENBIS_USERNAME')
+        if username:
+            return username.upper()
+        return None
+
     def _ensure_connected(self):
-        """Ensure we're connected to openBIS."""
+        """Ensure we're connected to openBIS, attempting auto-connection if needed."""
         if not self.connection.is_connected:
+            # Try auto-connection first
+            if self._auto_connect_from_env():
+                return
+
             raise ConnectionError("Not connected to openBIS. Please connect first using connect_to_openbis.")
 
     # === CONNECTION MANAGEMENT TOOLS ===
@@ -390,7 +437,10 @@ class PyBISToolManager:
             self._ensure_connected()
             params = self._parse_tool_input(input_str)
 
+            # Always use the user's own space unless explicitly specified
             space = params.get('space')
+            if not space:
+                space = self._get_user_space()
 
             projects = self.connection.openbis.get_projects(space=space)
 
@@ -446,7 +496,11 @@ class PyBISToolManager:
             self._ensure_connected()
             params = self._parse_tool_input(input_str)
 
+            # Always use the user's own space unless explicitly specified
             space = params.get('space')
+            if not space:
+                space = self._get_user_space()
+
             code = params.get('code')
             description = params.get('description', '')
 
@@ -475,10 +529,14 @@ class PyBISToolManager:
             self._ensure_connected()
             params = self._parse_tool_input(input_str)
 
+            # Always use the user's own space unless explicitly specified
             space = params.get('space')
+            if not space:
+                space = self._get_user_space()
+
             project = params.get('project')
             experiment_type = params.get('experiment_type')
-            limit = int(params.get('limit', 10))
+            limit = params.get('limit')  # No default limit
 
             # Get experiments
             experiments = self.connection.openbis.get_experiments(
@@ -487,22 +545,49 @@ class PyBISToolManager:
                 type=experiment_type
             )
 
-            # Limit results
-            experiments_list = experiments.df.head(limit) if hasattr(experiments, 'df') else experiments[:limit]
-
-            if len(experiments_list) == 0:
+            if len(experiments) == 0:
                 return "No experiments found matching the criteria."
 
+            total_count = len(experiments)
+            experiments_to_show = experiments
+
+            # Apply limit only if explicitly requested
+            if limit is not None:
+                limit = int(limit)
+                if limit > 0:
+                    # Sort by registration date (most recent first) when limiting
+                    if hasattr(experiments, 'df'):
+                        experiments_df = experiments.df.sort_values('registrationDate', ascending=False)
+                        experiments_to_show = experiments_df.head(limit)
+                    else:
+                        experiments_to_show = sorted(experiments,
+                                                   key=lambda x: getattr(x, 'registrationDate', ''),
+                                                   reverse=True)[:limit]
+
             # Format response
-            result = f"Found {len(experiments_list)} experiments:\n"
-            for idx, experiment in enumerate(experiments_list.iterrows() if hasattr(experiments_list, 'iterrows') else enumerate(experiments_list)):
-                if hasattr(experiments_list, 'iterrows'):
-                    _, experiment_data = experiment
-                    result += f"{idx+1}. {experiment_data.get('identifier', 'N/A')} ({experiment_data.get('type', 'N/A')})\n"
+            if limit is not None and limit > 0:
+                # When limiting, show the count of displayed items and include dates
+                displayed_count = len(experiments_to_show) if hasattr(experiments_to_show, '__len__') else limit
+                result = f"Showing {displayed_count} most recent experiments (out of {total_count} total):\n"
+
+                if hasattr(experiments_to_show, 'iterrows'):
+                    for idx, (_, experiment_data) in enumerate(experiments_to_show.iterrows()):
+                        reg_date = experiment_data.get('registrationDate', 'N/A')
+                        result += f"{idx+1}. {experiment_data.get('identifier', 'N/A')} ({experiment_data.get('type', 'N/A')}) - {reg_date}\n"
                 else:
-                    result += f"{idx+1}. {experiment.identifier} ({experiment.type})\n"
-                if idx >= 9:  # Limit display
-                    break
+                    for idx, experiment in enumerate(experiments_to_show):
+                        reg_date = getattr(experiment, 'registrationDate', 'N/A')
+                        result += f"{idx+1}. {experiment.identifier} ({experiment.type}) - {reg_date}\n"
+            else:
+                # When showing all, just show the total count
+                result = f"Found {total_count} experiments:\n"
+
+                if hasattr(experiments_to_show, 'iterrows'):
+                    for idx, (_, experiment_data) in enumerate(experiments_to_show.iterrows()):
+                        result += f"{idx+1}. {experiment_data.get('identifier', 'N/A')} ({experiment_data.get('type', 'N/A')})\n"
+                else:
+                    for idx, experiment in enumerate(experiments_to_show):
+                        result += f"{idx+1}. {experiment.identifier} ({experiment.type})\n"
 
             return result
 
@@ -577,10 +662,14 @@ class PyBISToolManager:
             params = self._parse_tool_input(input_str)
 
             sample_type = params.get('sample_type')
+            # Always use the user's own space unless explicitly specified
             space = params.get('space')
+            if not space:
+                space = self._get_user_space()
+
             project = params.get('project')
             experiment = params.get('experiment')
-            limit = int(params.get('limit', 10))
+            limit = params.get('limit')  # No default limit
 
             # Get samples
             samples = self.connection.openbis.get_samples(
@@ -590,22 +679,49 @@ class PyBISToolManager:
                 experiment=experiment
             )
 
-            # Limit results
-            samples_list = samples.df.head(limit) if hasattr(samples, 'df') else samples[:limit]
-
-            if len(samples_list) == 0:
+            if len(samples) == 0:
                 return "No samples found matching the criteria."
 
+            total_count = len(samples)
+            samples_to_show = samples
+
+            # Apply limit only if explicitly requested
+            if limit is not None:
+                limit = int(limit)
+                if limit > 0:
+                    # Sort by registration date (most recent first) when limiting
+                    if hasattr(samples, 'df'):
+                        samples_df = samples.df.sort_values('registrationDate', ascending=False)
+                        samples_to_show = samples_df.head(limit)
+                    else:
+                        samples_to_show = sorted(samples,
+                                               key=lambda x: getattr(x, 'registrationDate', ''),
+                                               reverse=True)[:limit]
+
             # Format response
-            result = f"Found {len(samples_list)} samples:\n"
-            for idx, sample in enumerate(samples_list.iterrows() if hasattr(samples_list, 'iterrows') else enumerate(samples_list)):
-                if hasattr(samples_list, 'iterrows'):
-                    _, sample_data = sample
-                    result += f"{idx+1}. {sample_data.get('identifier', 'N/A')} ({sample_data.get('type', 'N/A')})\n"
+            if limit is not None and limit > 0:
+                # When limiting, show the count of displayed items and include dates
+                displayed_count = len(samples_to_show) if hasattr(samples_to_show, '__len__') else limit
+                result = f"Showing {displayed_count} most recent samples (out of {total_count} total):\n"
+
+                if hasattr(samples_to_show, 'iterrows'):
+                    for idx, (_, sample_data) in enumerate(samples_to_show.iterrows()):
+                        reg_date = sample_data.get('registrationDate', 'N/A')
+                        result += f"{idx+1}. {sample_data.get('identifier', 'N/A')} ({sample_data.get('type', 'N/A')}) - {reg_date}\n"
                 else:
-                    result += f"{idx+1}. {sample.identifier} ({sample.type})\n"
-                if idx >= 9:  # Limit display
-                    break
+                    for idx, sample in enumerate(samples_to_show):
+                        reg_date = getattr(sample, 'registrationDate', 'N/A')
+                        result += f"{idx+1}. {sample.identifier} ({sample.type}) - {reg_date}\n"
+            else:
+                # When showing all, just show the total count
+                result = f"Found {total_count} samples:\n"
+
+                if hasattr(samples_to_show, 'iterrows'):
+                    for idx, (_, sample_data) in enumerate(samples_to_show.iterrows()):
+                        result += f"{idx+1}. {sample_data.get('identifier', 'N/A')} ({sample_data.get('type', 'N/A')})\n"
+                else:
+                    for idx, sample in enumerate(samples_to_show):
+                        result += f"{idx+1}. {sample.identifier} ({sample.type})\n"
 
             return result
 
@@ -649,7 +765,11 @@ class PyBISToolManager:
             params = self._parse_tool_input(input_str)
 
             sample_type = params.get('sample_type')
+            # Always use the user's own space unless explicitly specified
             space = params.get('space')
+            if not space:
+                space = self._get_user_space()
+
             code = params.get('code')
             properties = params.get('properties', {})
 
@@ -707,7 +827,7 @@ class PyBISToolManager:
             params = self._parse_tool_input(input_str)
 
             dataset_type = params.get('dataset_type')
-            limit = int(params.get('limit', 10))
+            limit = int(params.get('limit', 20))
 
             # Get datasets
             datasets = self.connection.openbis.get_datasets(type=dataset_type)

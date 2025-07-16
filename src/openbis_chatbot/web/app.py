@@ -11,6 +11,17 @@ from flask import Flask, render_template, request, jsonify, session
 from openbis_chatbot.query.query import RAGQueryEngine
 from openbis_chatbot.query.conversation_engine import ConversationEngine
 
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(
+    app,
+resources={r"/api/*": {"origins": "https://devel.datastore.bam.de"}},
+supports_credentials=True,
+allow_headers=["Content-Type", "Authorization"],
+methods=["GET", "POST", "OPTIONS"]
+)  # Replace with your ELN-LIMS URL
+
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,

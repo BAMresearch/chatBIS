@@ -107,9 +107,32 @@ IMPORTANT GUIDELINES:
         """Build the LangGraph conversation flow with multi-agent architecture."""
 
         def router_agent(state: ConversationState) -> ConversationState:
-            """Enhanced router agent that decides which path to take based on comprehensive keyword analysis."""
+            """Enhanced router agent that decides which path to take based on comprehensive keyword analysis and conversation context."""
             try:
                 user_query = state["user_query"].lower()
+                conversation_history = state.get("conversation_history", [])
+
+                # Check for context-dependent queries (short follow-up questions)
+                context_patterns = [
+                    'and what', 'what about', 'and samples', 'and experiments', 'and projects',
+                    'and collections', 'and objects', 'what samples', 'what experiments',
+                    'what projects', 'what collections', 'what objects', 'samples?', 'experiments?',
+                    'projects?', 'collections?', 'objects?'
+                ]
+
+                # If it's a short context-dependent query, check recent conversation
+                is_context_query = any(pattern in user_query for pattern in context_patterns) or len(user_query.split()) <= 3
+
+                if is_context_query and conversation_history:
+                    # Look at the last few messages to understand context
+                    recent_messages = conversation_history[-4:]  # Last 2 exchanges (user + assistant)
+                    recent_text = ' '.join([msg.get('content', '') for msg in recent_messages]).lower()
+
+                    # If recent conversation involved function calls, likely this is too
+                    if any(keyword in recent_text for keyword in ['found', 'projects:', 'experiments:', 'samples:', 'collections:']):
+                        state["decision"] = "function_call"
+                        logger.info(f"Router decision: function_call (context-based) for query: {state['user_query']}")
+                        return state
 
                 # Enhanced keyword-based routing for comprehensive pybis functionality
 
