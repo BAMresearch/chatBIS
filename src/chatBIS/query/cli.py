@@ -26,7 +26,7 @@ load_dotenv()
 
 def parse_args(args=None):
     """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(description="Chat with openBIS Assistant using conversation memory.")
+    parser = argparse.ArgumentParser(description="Chat with chatBIS using conversation memory.")
     parser.add_argument("--data", required=True, help="The directory containing the processed content")
     parser.add_argument("--model", default="qwen3", help="The Ollama model to use for chat")
     parser.add_argument("--memory-db", help="Path to SQLite database for conversation memory (default: data/conversation_memory.db)")
@@ -72,7 +72,7 @@ def run_with_args(args):
             print(f"📝 Started new conversation with session: {session_id}")
 
         # Interactive conversation loop
-        print("🤖 openBIS Assistant with Memory")
+        print("🤖 chatBIS with Memory")
         print("I'm here to help you with questions about openBIS. I'll remember our conversation!")
         print("Type 'exit' or 'quit' to end our conversation.")
         print("Type 'clear' to start a new conversation.")

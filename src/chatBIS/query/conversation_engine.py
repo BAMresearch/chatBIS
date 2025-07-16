@@ -19,6 +19,7 @@ from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 from .query import RAGQueryEngine
+from ..tools import PyBISToolManager
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -40,6 +41,11 @@ class ConversationState(TypedDict):
     response: str
     session_id: str
     token_count: int
+    # Multi-agent routing fields
+    decision: str  # "rag", "function_call", "conversation"
+    tool_action: Optional[Dict]  # Tool to execute and parameters
+    tool_output: Optional[str]  # Result from tool execution
+    final_response: str  # Final formatted response
 
 
 class ConversationEngine:
@@ -60,6 +66,9 @@ class ConversationEngine:
 
         # Initialize RAG engine
         self.rag_engine = RAGQueryEngine(data_dir=data_dir, model=model)
+
+        # Initialize tool manager
+        self.tool_manager = PyBISToolManager()
 
         # Initialize LLM
         if OLLAMA_AVAILABLE:
@@ -95,10 +104,144 @@ IMPORTANT GUIDELINES:
 12. Always consider the full context of the conversation, including what YOU said previously, not just what the user said.""")
 
     def _build_graph(self) -> StateGraph:
-        """Build the LangGraph conversation flow."""
+        """Build the LangGraph conversation flow with multi-agent architecture."""
 
-        def retrieve_context(state: ConversationState) -> ConversationState:
-            """Retrieve relevant context using RAG."""
+        def router_agent(state: ConversationState) -> ConversationState:
+            """Enhanced router agent that decides which path to take based on comprehensive keyword analysis and conversation context."""
+            try:
+                user_query = state["user_query"].lower()
+                conversation_history = state.get("conversation_history", [])
+
+                # Check for context-dependent queries (short follow-up questions)
+                context_patterns = [
+                    'and what', 'what about', 'and samples', 'and experiments', 'and projects',
+                    'and collections', 'and objects', 'what samples', 'what experiments',
+                    'what projects', 'what collections', 'what objects', 'samples?', 'experiments?',
+                    'projects?', 'collections?', 'objects?'
+                ]
+
+                # If it's a short context-dependent query, check recent conversation
+                is_context_query = any(pattern in user_query for pattern in context_patterns) or len(user_query.split()) <= 3
+
+                if is_context_query and conversation_history:
+                    # Look at the last few messages to understand context
+                    recent_messages = conversation_history[-4:]  # Last 2 exchanges (user + assistant)
+                    recent_text = ' '.join([msg.get('content', '') for msg in recent_messages]).lower()
+
+                    # If recent conversation involved function calls, likely this is too
+                    if any(keyword in recent_text for keyword in ['found', 'projects:', 'experiments:', 'samples:', 'collections:']):
+                        state["decision"] = "function_call"
+                        logger.info(f"Router decision: function_call (context-based) for query: {state['user_query']}")
+                        return state
+
+                # Enhanced keyword-based routing for comprehensive pybis functionality
+
+                # Connection-related keywords (always function call)
+                connection_keywords = ['connect', 'login', 'disconnect', 'logout', 'connection', 'session']
+
+                # Action keywords that indicate function calling
+                action_keywords = [
+                    # CRUD operations
+                    'create', 'new', 'make', 'add', 'insert',
+                    'update', 'modify', 'change', 'edit', 'set',
+                    'delete', 'remove', 'drop',
+                    'list', 'show', 'display', 'get', 'find', 'search', 'retrieve',
+
+                    # openBIS entities
+                    'space', 'spaces', 'project', 'projects',
+                    'experiment', 'experiments', 'collection', 'collections',
+                    'sample', 'samples', 'object', 'objects',
+                    'dataset', 'datasets', 'data',
+
+                    # Masterdata
+                    'type', 'types', 'property', 'properties', 'vocabulary', 'vocabularies',
+                    'sample_type', 'experiment_type', 'dataset_type',
+
+                    # File operations
+                    'upload', 'download', 'file', 'files'
+                ]
+
+                # Documentation/explanation keywords (RAG)
+                rag_keywords = [
+                    'how', 'what', 'why', 'when', 'where', 'which', 'who',
+                    'explain', 'describe', 'tell', 'about',
+                    'documentation', 'docs', 'help', 'guide', 'tutorial', 'manual',
+                    'definition', 'meaning', 'purpose', 'concept',
+                    'difference', 'compare', 'versus', 'vs',
+                    'example', 'examples', 'sample', 'demo'
+                ]
+
+                # Specific patterns that indicate function calling
+                function_patterns = [
+                    'in openbis',  # "list samples in openbis"
+                    'from openbis',  # "get data from openbis"
+                    'to openbis',  # "connect to openbis"
+                    'on openbis',  # "create sample on openbis"
+                ]
+
+                # Specific patterns that indicate RAG (highest priority for documentation)
+                rag_patterns = [
+                    'how to',  # "how to create a sample"
+                    'how can i',  # "how can i register"
+                    'how do i',  # "how do i create"
+                    'what is',  # "what is a sample"
+                    'what are',  # "what are collections"
+                    'can you explain',  # "can you explain"
+                    'tell me about',  # "tell me about"
+                    'explain how',  # "explain how to"
+                    'show me how',  # "show me how to"
+                    'help me',  # "help me understand"
+                    'i want to know',  # "i want to know how"
+                    'i need to know',  # "i need to know how"
+                ]
+
+                # Check for connection keywords (highest priority for function calls)
+                if any(keyword in user_query for keyword in connection_keywords):
+                    state["decision"] = "function_call"
+                    logger.info(f"Router decision: function_call (connection keyword) for query: {state['user_query']}")
+                    return state
+
+                # Check for RAG patterns (second highest priority - documentation questions)
+                has_rag_patterns = any(pattern in user_query for pattern in rag_patterns)
+                if has_rag_patterns:
+                    state["decision"] = "rag"
+                    logger.info(f"Router decision: rag (documentation pattern) for query: {state['user_query']}")
+                    return state
+
+                # Check for function patterns (third priority)
+                has_function_patterns = any(pattern in user_query for pattern in function_patterns)
+                if has_function_patterns:
+                    state["decision"] = "function_call"
+                else:
+                    # Check for keyword presence
+                    has_action_keywords = any(keyword in user_query for keyword in action_keywords)
+                    has_rag_keywords = any(keyword in user_query for keyword in rag_keywords)
+
+                    # Decision logic
+                    if has_action_keywords and not has_rag_keywords:
+                        state["decision"] = "function_call"
+                    elif has_rag_keywords and not has_action_keywords:
+                        state["decision"] = "rag"
+                    elif has_action_keywords and has_rag_keywords:
+                        # Both present - check which is more prominent or use context
+                        if any(word in user_query for word in ['how to', 'what is', 'explain']):
+                            state["decision"] = "rag"
+                        else:
+                            state["decision"] = "function_call"
+                    else:
+                        # No clear indicators - default to RAG for safety
+                        state["decision"] = "rag"
+
+                logger.info(f"Router decision: {state['decision']} for query: {state['user_query']}")
+                return state
+
+            except Exception as e:
+                logger.error(f"Error in router agent: {e}")
+                state["decision"] = "rag"  # Default fallback
+                return state
+
+        def rag_agent(state: ConversationState) -> ConversationState:
+            """RAG agent for documentation queries."""
             try:
                 # Get relevant chunks for the current query
                 relevant_chunks = self.rag_engine.retrieve_relevant_chunks(
@@ -106,36 +249,30 @@ IMPORTANT GUIDELINES:
                 )
                 state["rag_context"] = relevant_chunks
                 logger.info(f"Retrieved {len(relevant_chunks)} relevant chunks")
-                return state
-            except Exception as e:
-                logger.error(f"Error retrieving context: {e}")
-                state["rag_context"] = []
-                return state
 
-        def generate_response(state: ConversationState) -> ConversationState:
-            """Generate response using LLM with conversation history and RAG context."""
-            try:
-                if not self.llm:
+                # Generate RAG response
+                if not OLLAMA_AVAILABLE or not self.llm:
                     state["response"] = "Ollama not available. Cannot generate response."
                     return state
 
-                # Prepare messages for the LLM
-                messages = [self.system_message]
+                # Build conversation context
+                messages = []
 
-                # Add ALL conversation history (both user and assistant messages)
-                # This ensures the LLM can see its own previous responses for context
+                # Add conversation history
                 if state["messages"]:
                     messages.extend(state["messages"])
 
-                # Create context from RAG chunks
-                if state["rag_context"]:
+                # Add system message with RAG context
+                if relevant_chunks:
                     context_text = "\n\n".join([
-                        f"Knowledge from {chunk['title']}:\n{chunk['content']}"
-                        for chunk in state["rag_context"]
+                        f"Source: {chunk.get('title', 'Unknown')} ({chunk.get('url', 'No URL')})\nContent: {chunk['content']}"
+                        for chunk in relevant_chunks
                     ])
-                    context_message = SystemMessage(content=f"""
-Additional context for answering the user's question (for your internal use only - do not mention this in your answer):
 
+                    context_message = SystemMessage(content=f"""You are a helpful assistant specializing in openBIS, a system for managing research data.
+You provide friendly, clear, and accurate answers about openBIS based on the provided context.
+
+Context from openBIS documentation:
 {context_text}
 
 Remember to use this information naturally in your response without referring to it as "documentation" or "information provided".
@@ -153,12 +290,123 @@ Remember to use this information naturally in your response without referring to
                 total_text = " ".join([msg.content for msg in messages if hasattr(msg, 'content')])
                 state["token_count"] = len(total_text.split()) * 1.3  # Rough token estimation
 
-                logger.info(f"Generated response with estimated {state['token_count']} tokens")
+                logger.info(f"Generated RAG response with estimated {state['token_count']} tokens")
                 return state
 
             except Exception as e:
-                logger.error(f"Error generating response: {e}")
-                state["response"] = f"I encountered an error while processing your request: {str(e)}"
+                logger.error(f"Error in RAG agent: {e}")
+                state["response"] = f"I encountered an error: {str(e)}"
+                state["rag_context"] = []
+                return state
+
+        def function_calling_agent(state: ConversationState) -> ConversationState:
+            """Function calling agent for pybis tool execution."""
+            try:
+                if not OLLAMA_AVAILABLE or not self.llm:
+                    state["tool_output"] = "Ollama not available. Cannot execute functions."
+                    return state
+
+                # Get available tools
+                available_tools = self.tool_manager.get_tools()
+
+                if not available_tools:
+                    state["tool_output"] = "No tools available. pybis may not be installed."
+                    return state
+
+                # Create tool descriptions for the LLM
+                tool_descriptions = []
+                for tool in available_tools:
+                    tool_descriptions.append(f"- {tool.name}: {tool.description}")
+
+                tools_text = "\n".join(tool_descriptions)
+
+                # Create prompt for tool selection
+                prompt = f"""You are a function calling assistant for openBIS. The user wants to perform an action.
+
+Available tools:
+{tools_text}
+
+User query: {state["user_query"]}
+
+Based on the user's query, determine:
+1. Which tool to use (if any)
+2. What parameters to extract from the query
+
+Respond in this exact format:
+TOOL: tool_name
+PARAMETERS: param1=value1, param2=value2
+
+If no tool is appropriate, respond with:
+TOOL: none
+REASON: explanation why no tool is suitable"""
+
+                # Get tool selection from LLM
+                response = self.llm.invoke(prompt)
+                response_text = response.content.strip()
+
+                # Parse the response
+                lines = response_text.split('\n')
+                tool_name = None
+                parameters = ""
+
+                for line in lines:
+                    if line.startswith('TOOL:'):
+                        tool_name = line.split(':', 1)[1].strip()
+                    elif line.startswith('PARAMETERS:'):
+                        parameters = line.split(':', 1)[1].strip()
+
+                if tool_name == "none" or not tool_name:
+                    state["tool_output"] = "I couldn't identify an appropriate action for your request. Could you be more specific?"
+                    return state
+
+                # Find the tool
+                selected_tool = None
+                for tool in available_tools:
+                    if tool.name == tool_name:
+                        selected_tool = tool
+                        break
+
+                if not selected_tool:
+                    state["tool_output"] = f"Tool '{tool_name}' not found."
+                    return state
+
+                # Execute the tool
+                logger.info(f"Executing tool: {tool_name} with parameters: {parameters}")
+                result = selected_tool.func(parameters)
+                state["tool_output"] = result
+
+                logger.info(f"Tool execution completed: {tool_name}")
+                return state
+
+            except Exception as e:
+                logger.error(f"Error in function calling agent: {e}")
+                state["tool_output"] = f"Error executing function: {str(e)}"
+                return state
+
+        def format_response(state: ConversationState) -> ConversationState:
+            """Format the final response based on the agent that processed the query."""
+            try:
+                if state["decision"] == "rag":
+                    # Use RAG response
+                    state["final_response"] = state.get("response", "No response generated.")
+                elif state["decision"] == "function_call":
+                    # Use tool output
+                    tool_output = state.get("tool_output", "No tool output available.")
+                    state["final_response"] = tool_output
+                else:
+                    # Fallback
+                    state["final_response"] = state.get("response", "I'm not sure how to help with that.")
+
+                # Set the response field for compatibility
+                state["response"] = state["final_response"]
+
+                logger.info(f"Formatted final response for decision: {state['decision']}")
+                return state
+
+            except Exception as e:
+                logger.error(f"Error formatting response: {e}")
+                state["final_response"] = f"Error formatting response: {str(e)}"
+                state["response"] = state["final_response"]
                 return state
 
         def update_conversation(state: ConversationState) -> ConversationState:
@@ -182,15 +430,35 @@ Remember to use this information naturally in your response without referring to
         # Build the graph
         workflow = StateGraph(ConversationState)
 
-        # Add nodes
-        workflow.add_node("retrieve_context", retrieve_context)
-        workflow.add_node("generate_response", generate_response)
+        # Add nodes for multi-agent architecture
+        workflow.add_node("router", router_agent)
+        workflow.add_node("rag_agent", rag_agent)
+        workflow.add_node("function_calling_agent", function_calling_agent)
+        workflow.add_node("format_response", format_response)
         workflow.add_node("update_conversation", update_conversation)
 
+        # Add conditional routing function
+        def route_decision(state: ConversationState) -> str:
+            """Route based on the router's decision."""
+            decision = state.get("decision", "rag")
+            if decision == "function_call":
+                return "function_calling_agent"
+            else:
+                return "rag_agent"
+
         # Add edges
-        workflow.set_entry_point("retrieve_context")
-        workflow.add_edge("retrieve_context", "generate_response")
-        workflow.add_edge("generate_response", "update_conversation")
+        workflow.set_entry_point("router")
+        workflow.add_conditional_edges(
+            "router",
+            route_decision,
+            {
+                "rag_agent": "rag_agent",
+                "function_calling_agent": "function_calling_agent"
+            }
+        )
+        workflow.add_edge("rag_agent", "format_response")
+        workflow.add_edge("function_calling_agent", "format_response")
+        workflow.add_edge("format_response", "update_conversation")
         workflow.add_edge("update_conversation", END)
 
         # Compile with checkpointer for memory
@@ -238,7 +506,11 @@ Remember to use this information naturally in your response without referring to
                     rag_context=[],
                     response="",
                     session_id=session_id,
-                    token_count=0
+                    token_count=0,
+                    decision="",
+                    tool_action=None,
+                    tool_output=None,
+                    final_response=""
                 )
             else:
                 # Create new conversation state
@@ -248,7 +520,11 @@ Remember to use this information naturally in your response without referring to
                     rag_context=[],
                     response="",
                     session_id=session_id,
-                    token_count=0
+                    token_count=0,
+                    decision="",
+                    tool_action=None,
+                    tool_output=None,
+                    final_response=""
                 )
         except Exception:
             # Fallback to new state if there's an issue loading existing state
@@ -258,7 +534,11 @@ Remember to use this information naturally in your response without referring to
                 rag_context=[],
                 response="",
                 session_id=session_id,
-                token_count=0
+                token_count=0,
+                decision="",
+                tool_action=None,
+                tool_output=None,
+                final_response=""
             )
 
         try:
@@ -274,6 +554,7 @@ Remember to use this information naturally in your response without referring to
                 "token_count": result["token_count"],
                 "rag_chunks_used": len(result["rag_context"]),
                 "conversation_length": len(result["messages"]),
+                "decision": result.get("decision", "unknown"),
                 "timestamp": datetime.now().isoformat()
             }
 

@@ -21,9 +21,14 @@ This project provides an intelligent chatbot that can answer questions about ope
 
 1. **Scraper**: Scrapes content from the openBIS documentation website
 2. **Processor**: Processes the scraped content for use in RAG
-3. **Conversation Engine**: LangGraph-based engine with memory and RAG integration
+3. **Multi-Agent Conversation Engine**: LangGraph-based engine with:
+   - **RAG Agent**: Answers documentation questions using retrieval-augmented generation
+   - **Function Calling Agent**: Executes pybis functions for direct openBIS interaction
+   - **Router Agent**: Intelligently routes queries to the appropriate agent
+   - **Memory Management**: Persistent conversation history across sessions
 4. **Web Interface**: Browser-based chat interface with session management
 5. **CLI Interface**: Command-line chat interface with memory
+6. **pybis Integration**: Direct integration with pybis for openBIS operations
 
 ## Installation
 
@@ -42,6 +47,7 @@ The project uses the following key dependencies:
 - **Flask**: For the web interface
 - **SQLite**: For persistent conversation storage
 - **Ollama**: For local LLM inference
+- **pybis**: For direct openBIS integration and function calling
 
 ### From Source (Recommended)
 
@@ -216,13 +222,53 @@ The conversation engine works by:
 - **Persistent Storage**: Conversations survive application restarts
 - **Context Awareness**: Assistant remembers its own previous offers and responses
 
+### Multi-Agent Architecture
+
+The chatbot now features a sophisticated multi-agent system that can both answer questions and perform actions:
+
+#### Router Agent
+- Analyzes user queries to determine intent
+- Routes to appropriate agent based on keywords and context
+- Supports three decision types: `rag`, `function_call`, `conversation`
+
+#### RAG Agent (Documentation Queries)
+- Handles questions about openBIS documentation
+- Uses retrieval-augmented generation for accurate responses
+- Examples: "What is openBIS?", "How do I create a sample?"
+
+#### Function Calling Agent (pybis Integration)
+- Executes actual operations on openBIS instances
+- Supports connection management, sample/dataset operations, space/project management
+- Examples: "Connect to openBIS", "List all samples", "Create a new sample"
+
+#### Available pybis Functions
+- **Connection**: `connect_to_openbis`, `disconnect_from_openbis`, `check_openbis_connection`
+- **Samples**: `list_samples`, `get_sample`, `create_sample`
+- **Datasets**: `list_datasets`, `get_dataset`
+- **Spaces/Projects**: `list_spaces`, `list_projects`
+
+#### Usage Examples
+```
+# Documentation query (RAG Agent)
+User: "What is openBIS?"
+Response: [Detailed explanation from documentation]
+
+# Function call (Function Calling Agent)
+User: "Connect to openBIS at https://my-server.com"
+Response: "Successfully connected to openBIS..."
+
+# Mixed scenarios handled intelligently
+User: "How do I list samples?" → RAG (documentation)
+User: "List samples in space LAB" → Function Call (execution)
+```
+
 ### Web Interface
 
 The web interface works by:
 1. Starting a Flask web server
 2. Serving a responsive HTML/CSS/JavaScript chat interface
 3. Handling API requests from the frontend
-4. Using the query engine to generate responses
+4. Using the multi-agent conversation engine to generate responses
 5. Returning the responses to the frontend in JSON format
 
 ## Project Structure
@@ -233,18 +279,24 @@ chatBIS/
 │   ├── scraper/                  # Web scraping components
 │   ├── processor/                # Content processing components
 │   ├── query/                    # Query and conversation engine
-│   │   ├── conversation_engine.py # LangGraph-based conversation engine
+│   │   ├── conversation_engine.py # Multi-agent conversation engine
 │   │   ├── query.py              # RAG query engine
 │   │   └── cli.py                # CLI interface with memory
+│   ├── tools/                    # Function calling tools
+│   │   └── pybis_tools.py        # pybis integration tools
 │   ├── web/                      # Web interface
 │   └── utils/                    # Utility functions
 ├── tests/                        # Test suite
+├── examples/                     # Example scripts
+│   └── multi_agent_demo.py       # Multi-agent demo
 ├── scripts/                      # Utility scripts
 ├── data/                         # Data directory
 │   ├── raw/                      # Scraped content
 │   └── processed/                # Processed chunks and embeddings
 ├── docs/                         # Documentation
+│   ├── multi_agent_architecture.md # Multi-agent documentation
 │   └── presentations/            # Project presentations
+├── test_multi_agent.py           # Multi-agent test script
 └── requirements.txt              # Python dependencies
 ```
 
