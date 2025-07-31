@@ -1,0 +1,3390 @@
+{
+  "pybis.attachment.Attachment.__init__": {
+    "signature": "(self, filename, title=None, description=None)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.attachment.Attachment.get_data": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.attachment.Attachment.get_data_short": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.utils.extract_person": {
+    "signature": "(person)",
+    "doc": ""
+  },
+  "pybis.utils.format_timestamp": {
+    "signature": "(ts)",
+    "doc": ""
+  },
+  "pybis.definitions.get_method_for_entity": {
+    "signature": "(entity: str, action: str) -> str",
+    "doc": ""
+  },
+  "pybis.definitions.get_type_for_entity": {
+    "signature": "(entity, action, parents_or_children='')",
+    "doc": ""
+  },
+  "pybis.utils.nvl": {
+    "signature": "(val, string='')",
+    "doc": ""
+  },
+  "pybis.definitions.openbis_definitions": {
+    "signature": "(entity)",
+    "doc": "attrs_new: Attributes, that can appear when creating new entities\nattrs_up: Attributes that can be updated\nattrs: Attributes that are displayed when fetched\nmulti: multivalue-elements which appear in an entity. E.g. parents or children in a Sample.\nidentifier: to update entities, the identifier must be specified. Usually identityName + \"Id\"\n(Entity-Name in camel-case, starting with lowercase letter, with Id added)"
+  },
+  "pybis.attribute.AttrHolder.__call__": {
+    "signature": "(self, data)",
+    "doc": "This internal method is invoked when an existing object is loaded.\nInstead of invoking a special method we \u00abcall\u00bb the object with the data\n   self(data)\nwhich automatically invokes this method.\nSince the data comes from openBIS, we do not have to check it (hence the\nself.__dict__ statements to prevent invoking the __setattr__ method)\nInternally data is stored with an underscore, e.g.\n    sample._space = {\n        '@type': 'as.dto.space.id.SpacePermId',\n        'permId': 'MATERIALS'\n    }\nbut when fetching the attribute without the underscore, we only return\nthe relevant data for the user:\n    sample.space   # MATERIALS"
+  },
+  "pybis.attribute.AttrHolder.__getattr__": {
+    "signature": "(self, name)",
+    "doc": "handles all attribute requests dynamically.\nValues are returned in a sensible way, for example:\n    the identifiers of parents, children and components are returned as an\n    array of values, whereas attachments, users (of groups) and\n    roleAssignments are returned as an array of dictionaries."
+  },
+  "pybis.attribute.AttrHolder.__init__": {
+    "signature": "(self, openbis_obj, entity, type=None)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.attribute.AttrHolder.__repr__": {
+    "signature": "(self)",
+    "doc": "When using IPython, this method displays a nice table\nof all attributes and their values when the object is printed."
+  },
+  "pybis.attribute.AttrHolder.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "This method is always invoked whenever we assign an attribute to an\nobject, e.g.\n    new_sample.space = 'MATERIALS'\n    new_sample.parents = ['/MATERIALS/YEAST747']"
+  },
+  "pybis.attribute.AttrHolder._ident_for_whatever": {
+    "signature": "(self, whatever)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder._new_attrs": {
+    "signature": "(self, method_name=None)",
+    "doc": "Returns the Python-equivalent JSON request when a new object is created.\nIt is used internally by the save() method of a newly created object."
+  },
+  "pybis.attribute.AttrHolder._repr_html_": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder._up_attrs": {
+    "signature": "(self, method_name=None, permId=None)",
+    "doc": "Returns the Python-equivalent JSON request when a new object is updated.\nIt is used internally by the save() method of an object to be updated."
+  },
+  "pybis.attribute.AttrHolder.add_attachment": {
+    "signature": "(self, fileName, title=None, description=None)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder.add_children": {
+    "signature": "(self, children)",
+    "doc": "add children to _children list"
+  },
+  "pybis.attribute.AttrHolder.add_components": {
+    "signature": "(self, components_to_add)",
+    "doc": "Samples and DataSets may contain other DataSets and Samples. This function adds\nadditional Samples/DataSets to the current object."
+  },
+  "pybis.attribute.AttrHolder.add_containers": {
+    "signature": "(self, containers_to_add)",
+    "doc": "add component to _containers list"
+  },
+  "pybis.attribute.AttrHolder.add_users": {
+    "signature": "(self, userIds)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder.add_parents": {
+    "signature": "(self, parents_to_add)",
+    "doc": "add parent to _parents list"
+  },
+  "pybis.attribute.AttrHolder.add_tags": {
+    "signature": "(self, tags)",
+    "doc": "add tags to _tags list"
+  },
+  "pybis.attribute.AttrHolder.all": {
+    "signature": "(self)",
+    "doc": "Return all attributes of an entity in a dict"
+  },
+  "pybis.attribute.AttrHolder.del_children": {
+    "signature": "(self, children)",
+    "doc": "remove children from _children list"
+  },
+  "pybis.attribute.AttrHolder.del_components": {
+    "signature": "(self, components_to_remove)",
+    "doc": "Samples and DataSets may contain other DataSets and Samples. This function removes\nadditional Samples/DataSets from the current object."
+  },
+  "pybis.attribute.AttrHolder.del_containers": {
+    "signature": "(self, containers_to_remove)",
+    "doc": "remove component from _containers list"
+  },
+  "pybis.attribute.AttrHolder.del_users": {
+    "signature": "(self, userIds)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder.del_parents": {
+    "signature": "(self, parents_to_remove)",
+    "doc": "remove parent from _parents list"
+  },
+  "pybis.attribute.AttrHolder.del_tags": {
+    "signature": "(self, tags)",
+    "doc": "remove tags from _tags list"
+  },
+  "pybis.attribute.AttrHolder.download_attachments": {
+    "signature": "(self, destination_folder=None)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder.get_attachments": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder.get_children": {
+    "signature": "(self, **kwargs)",
+    "doc": "get the current children and return them as a list (Things/DataFrame)\nor return empty list"
+  },
+  "pybis.attribute.AttrHolder.get_components": {
+    "signature": "(self, **kwargs)",
+    "doc": "Samples and DataSets may contain other DataSets and Samples. This function returns the\ncontained Samples/DataSets (a.k.a. components) as a list (Things/DataFrame)"
+  },
+  "pybis.attribute.AttrHolder.get_container": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder.get_containers": {
+    "signature": "(self, **kwargs)",
+    "doc": "get the containers and return them as a list (Things/DataFrame)\nor return empty list"
+  },
+  "pybis.attribute.AttrHolder.get_parents": {
+    "signature": "(self, **kwargs)",
+    "doc": "get the current parents and return them as a list (Things/DataFrame)\nor return empty list"
+  },
+  "pybis.attribute.AttrHolder.get_tags": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder.get_type": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.attribute.AttrHolder.set_children": {
+    "signature": "(self, children_to_set)",
+    "doc": "set the new _children list"
+  },
+  "pybis.attribute.AttrHolder.set_components": {
+    "signature": "(self, components_to_set)",
+    "doc": "Samples and DataSets may contain other DataSets and Samples. This function sets the\ncontained Samples/DataSets (a.k.a. components)"
+  },
+  "pybis.attribute.AttrHolder.set_containers": {
+    "signature": "(self, containers_to_set)",
+    "doc": "set the new _containers list"
+  },
+  "pybis.attribute.AttrHolder.set_parents": {
+    "signature": "(self, parents_to_set)",
+    "doc": "set the new _parents list"
+  },
+  "pybis.attribute.AttrHolder.set_tags": {
+    "signature": "(self, tags)",
+    "doc": "set _tags list"
+  },
+  "pybis.attribute.AttrHolder.set_users": {
+    "signature": "(self, userIds)",
+    "doc": ""
+  },
+  "pybis.data_set.transfer_to_file_creation": {
+    "signature": "(content, file_creation, key, file_creation_key=None)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetCreation.__init__": {
+    "signature": "(self, openbis, data_set_type, path, commit_id, repository_id, dms, sample=None, experiment=None, properties={}, dss_code=None, parents=None, data_set_code=None, contents=[])",
+    "doc": "Initialize the command object with the necessary parameters.\n:param openbis: The openBIS API object.\n:param data_set_type: The type of the data set\n:param path: The path to the git repository\n:param commit_id: The git commit id\n:param repository_id: The git repository id - same for copies\n:param dms: An external data managment system object or external_dms_id\n:param sample: A sample object or sample id.\n:param experiment: An experiment or experiment id.\n:param properties: Properties for the data set.\n:param dss_code: Code for the DSS -- defaults to the first dss if none is supplied.\n:param parents: Parents for the data set.\n:param data_set_code: A data set code -- used if provided, otherwise generated on the server\n:param contents: A list of dicts that describe the contents:\n    {'fileLength': [file length],\n     'crc32': [crc32 checksum],\n     'checksum': [checksum other than crc32],\n     'checksumType': [checksum type if fiels checksum is used],\n     'directory': [is path a directory?]\n     'path': [the relative path string]}"
+  },
+  "pybis.data_set.GitDataSetCreation.as_file_metadata": {
+    "signature": "(self, content)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetCreation.create_mixed_data_set": {
+    "signature": "(self, metadata_creation, file_metadata)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetCreation.create_pure_metadata_data_set": {
+    "signature": "(self, data_set_creation)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetCreation.data_set_file_metadata": {
+    "signature": "(self)",
+    "doc": "Create a representation of the file metadata"
+  },
+  "pybis.data_set.GitDataSetCreation.data_set_metadata_creation": {
+    "signature": "(self)",
+    "doc": "Create the respresentation of the data set metadata."
+  },
+  "pybis.data_set.GitDataSetCreation.data_store_url": {
+    "signature": "(self, dss_code)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetCreation.new_git_data_set": {
+    "signature": "(self)",
+    "doc": "Create a link data set.\n:return: A DataSet object"
+  },
+  "pybis.data_set.GitDataSetFileSearch.__init__": {
+    "signature": "(self, openbis, data_set_id, dss_code=None)",
+    "doc": "Initialize the command object with the necessary parameters.\n:param openbis: The openBIS API object.\n:param data_set_id: Id of the data set to be updated\n:param dss_code: Code for the DSS -- defaults to the first dss if none is supplied."
+  },
+  "pybis.data_set.GitDataSetFileSearch.data_store_url": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetFileSearch.get_data_set_file_fetch_options": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetFileSearch.get_data_set_file_search_criteria": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetFileSearch.search_files": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetUpdate.__init__": {
+    "signature": "(self, openbis, data_set_id)",
+    "doc": "Initialize the command object with the necessary parameters.\n:param openbis: The openBIS API object.\n:param data_set_id: Id of the data set to be updated"
+  },
+  "pybis.data_set.GitDataSetUpdate.delete_content_copy": {
+    "signature": "(self, content_copy)",
+    "doc": "Deletes the given content_copy from openBIS.\n:param content_copy: Content copy to be deleted."
+  },
+  "pybis.data_set.GitDataSetUpdate.get_actions_add_content_copy": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetUpdate.get_actions_remove_content_copy": {
+    "signature": "(self, content_copy)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetUpdate.get_content_copy_creation": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetUpdate.get_data_set_id": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetUpdate.get_data_set_update": {
+    "signature": "(self, content_copy_actions=[])",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetUpdate.get_linked_data": {
+    "signature": "(self, actions)",
+    "doc": ""
+  },
+  "pybis.data_set.GitDataSetUpdate.new_content_copy": {
+    "signature": "(self, path, commit_id, repository_id, edms_id)",
+    "doc": "Create a data set update for adding a content copy.\n:return: A DataSetUpdate object"
+  },
+  "pybis.data_set.GitDataSetUpdate.send_request": {
+    "signature": "(self, data_set_update)",
+    "doc": ""
+  },
+  "pybis.utils.extract_code": {
+    "signature": "(obj)",
+    "doc": ""
+  },
+  "pybis.utils.extract_downloadUrl": {
+    "signature": "(obj)",
+    "doc": ""
+  },
+  "pybis.utils.extract_permid": {
+    "signature": "(permid)",
+    "doc": ""
+  },
+  "pybis.definitions.get_fetchoption_for_entity": {
+    "signature": "(entity)",
+    "doc": ""
+  },
+  "pybis.utils.parse_jackson": {
+    "signature": "(input_json)",
+    "doc": "openBIS uses a library called \u00abjackson\u00bb to automatically generate the JSON RPC output.\nObjects that are found the first time are added an attribute \u00ab@id\u00bb.\nAny further findings only carry this reference id.\nThis function is used to dereference the output."
+  },
+  "pybis.dataset.signed_to_unsigned": {
+    "signature": "(sig_int)",
+    "doc": "openBIS delivers crc32 checksums as signed integers.\nIf the number is negative, we just have to add 2**32\nWe display the hex number to match with the classic UI"
+  },
+  "pybis.dataset.DataSet.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.dataset.DataSet.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.__init__": {
+    "signature": "(self, openbis_obj, type, data=None, files=None, zipfile=None, folder=None, kind=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.dataset.DataSet.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.dataset.DataSet.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.dataset.DataSet.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.dataset.DataSet.__str__": {
+    "signature": "(self)",
+    "doc": "Return str(self)."
+  },
+  "pybis.dataset.DataSet._download_fast_physical": {
+    "signature": "(self, files, destination, create_default_folders, wait_until_finished)",
+    "doc": "Download for data sets of kind PHYSICAL using fast download scheme"
+  },
+  "pybis.dataset.DataSet._download_link": {
+    "signature": "(self, files, destination, wait_until_finished, workers, linked_dataset_fileservice_url, content_copy_index)",
+    "doc": "Download for data sets of kind LINK.\nRequires the microservice server to be running at the given linked_dataset_fileservice_url."
+  },
+  "pybis.dataset.DataSet._download_physical": {
+    "signature": "(self, files, destination, create_default_folders, wait_until_finished, workers)",
+    "doc": "Download for data sets of kind PHYSICAL."
+  },
+  "pybis.dataset.DataSet._file_set": {
+    "signature": "(target_dir: str) -> Set[str]",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet._generate_plugin_request": {
+    "signature": "(self, dss, permId=None)",
+    "doc": "generates a request to activate the dataset-uploader ingestion plugin to\nregister our files as a new dataset"
+  },
+  "pybis.dataset.DataSet._get_download_url": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet._is_symlink_or_physical": {
+    "signature": "(self, what: str, target_dir: str = None, expected_file_list: Optional[List[str]] = None)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.dataset.DataSet._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet._upload_v1": {
+    "signature": "(self, permId, datastores)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet._upload_v3": {
+    "signature": "(self, data_stores)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.archive": {
+    "signature": "(self, remove_from_data_store=True)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.archive_unarchive": {
+    "signature": "(self, method, fetchopts)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.dataset.DataSet.download": {
+    "signature": "(self, files=None, destination=None, create_default_folders=True, wait_until_finished=True, workers=10, linked_dataset_fileservice_url=None, content_copy_index=0)",
+    "doc": "download the files of the dataSet.\n\nfiles -- a single file or a list of files. If no files are specified, all files of a given dataset are downloaded.\ndestination -- if destination is specified, files are downloaded in __current_dir__/destination/permId/ If no destination is specified, the hostname is chosen instead of destination\ncreate_default_folders -- by default, this download method will automatically create destination/permId/original/DEFAULT. If create_default_folders is set to False, all these folders will be ommited. Use with care and by specifying the destination folder.\nworkers -- Default: 10. Files are usually downloaded in parallel, using 10 workers by default.\nwait_unitl_finished -- True. If you want to immediately continue and run the download in background, set this to False."
+  },
+  "pybis.dataset.DataSet.get_dataset_files": {
+    "signature": "(self, start_with=None, count=None, **properties)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.get_file_list": {
+    "signature": "(self, recursive=True, start_folder='/')",
+    "doc": "Lists all files of a given dataset. You can specifiy a start_folder other than \"/\".\nBy default, all directories and their containing files are listed recursively. You can\nturn off this option by setting recursive=False."
+  },
+  "pybis.dataset.DataSet.get_files": {
+    "signature": "(self, start_folder='/')",
+    "doc": "Returns a DataFrame of all files in this dataset"
+  },
+  "pybis.dataset.DataSet.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet._method": {
+    "signature": "(self, *, what: str = 'symlink', target_dir: str = None, expected_file_list: Optional[List[str]] = None)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.save": {
+    "signature": "(self, permId=None)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.set_properties": {
+    "signature": "(self, properties)",
+    "doc": "expects a dictionary of property names and their values.\nDoes not save the dataset."
+  },
+  "pybis.dataset.DataSet.symlink": {
+    "signature": "(self, target_dir: str = None, replace_if_symlink_exists: bool = True)",
+    "doc": "replace_if_symlink_exists will replace the the target_dir\nin case it is an existing symlink\nReturns the absolute path of the symlink"
+  },
+  "pybis.dataset.DataSet.unarchive": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.upload_files_v1": {
+    "signature": "(self, datastore_url=None, files=None, folder=None, wait_until_finished=False)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.upload_files_v3": {
+    "signature": "(self, files, datastore_url=None, folder=None, wait_until_finished=False)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSet.zipit": {
+    "signature": "(self, file_or_folder, zipf)",
+    "doc": "Takes a directory or a file, and a zipfile instance. For every file that is encountered,\nwe issue the write() method to add that file to the zipfile.\nIf we have a directory, we walk that directory and add every file inside it,\nincluding the starting folder name."
+  },
+  "pybis.dataset.DataSetDownloadQueue.__enter__": {
+    "signature": "(self, *args, **kwargs)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSetDownloadQueue.__exit__": {
+    "signature": "(self, *args, **kwargs)",
+    "doc": "This method is called at the end of a with statement."
+  },
+  "pybis.dataset.DataSetDownloadQueue.__init__": {
+    "signature": "(self, workers=20, collect_files_with_wrong_length=False)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.dataset.DataSetDownloadQueue.download_file": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSetDownloadQueue.join": {
+    "signature": "(self)",
+    "doc": "needs to be called if you want to wait for all downloads to be finished"
+  },
+  "pybis.dataset.DataSetDownloadQueue.put": {
+    "signature": "(self, things)",
+    "doc": "expects a list [url, filename] which is put into the download queue"
+  },
+  "pybis.dataset.DataSetUploadQueue.__enter__": {
+    "signature": "(self, *args, **kwargs)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSetUploadQueue.__exit__": {
+    "signature": "(self, *args, **kwargs)",
+    "doc": "This method is called at the end of a with statement."
+  },
+  "pybis.dataset.DataSetUploadQueue.__init__": {
+    "signature": "(self, workers=20, multipart=False)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.dataset.DataSetUploadQueue.join": {
+    "signature": "(self)",
+    "doc": "needs to be called if you want to wait for all uploads to be finished"
+  },
+  "pybis.dataset.DataSetUploadQueue.put": {
+    "signature": "(self, things)",
+    "doc": "expects a list [url, filename] which is put into the upload queue"
+  },
+  "pybis.dataset.DataSetUploadQueue.upload_file": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSetUploadQueueNew.__enter__": {
+    "signature": "(self, *args, **kwargs)",
+    "doc": ""
+  },
+  "pybis.dataset.DataSetUploadQueueNew.__exit__": {
+    "signature": "(self, *args, **kwargs)",
+    "doc": "This method is called at the end of a with statement."
+  },
+  "pybis.dataset.DataSetUploadQueueNew.__init__": {
+    "signature": "(self, url_base, workers=10)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.dataset.DataSetUploadQueueNew.create_session": {
+    "signature": "(self, url_base)",
+    "doc": "Create a session object to handle retries in case of server failure"
+  },
+  "pybis.dataset.DataSetUploadQueueNew.join": {
+    "signature": "(self)",
+    "doc": "needs to be called if you want to wait for all uploads to be finished"
+  },
+  "pybis.dataset.DataSetUploadQueueNew.put": {
+    "signature": "(self, things)",
+    "doc": "expects a list [url, filename] which is put into the upload queue"
+  },
+  "pybis.dataset.DataSetUploadQueueNew.upload_file": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.FastDownload.__init__": {
+    "signature": "(self, token, download_url, perm_id, files, destination, create_default_folders, wait_until_finished, verify_certificates, server_information, wished_number_of_streams=4)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.fast_download.FastDownload._create_fast_download_session_request": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.FastDownload._download_step": {
+    "signature": "(self, download_url, download_session_id, session_stream_ids, ranges, exception_list)",
+    "doc": "Perform downloading of chunks in separate threads\n:param download_url: url to use for downloading data\n:param download_session_id: download session id\n:param session_stream_ids: list of available streams\n:param ranges: ranges provided for files\n:return: nothing"
+  },
+  "pybis.fast_download.FastDownload._make_json_id": {
+    "signature": "(self, file_path)",
+    "doc": "Prepare JSON to create session for fileserver for given file in dataset"
+  },
+  "pybis.fast_download.FastDownload._queue_all_files": {
+    "signature": "(self, base_url, download_session_id, ranges)",
+    "doc": "queue all chunks for download from fileserver, each file receives different chunk range\nFileA: 0:4\nFileB: 5:6"
+  },
+  "pybis.fast_download.FastDownload.download": {
+    "signature": "(self)",
+    "doc": "Fast download of files from dataset"
+  },
+  "pybis.dataset.LinkedData.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.dataset.LinkedData.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.dataset.LinkedData.__init__": {
+    "signature": "(self, data=None)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.openbis_object.OpenBisObject.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.openbis_object.OpenBisObject.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.openbis_object.OpenBisObject.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.openbis_object.OpenBisObject.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.openbis_object.OpenBisObject.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.openbis_object.OpenBisObject.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.openbis_object.OpenBisObject._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.openbis_object.OpenBisObject._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.openbis_object.OpenBisObject._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.openbis_object.OpenBisObject.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.openbis_object.OpenBisObject.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.openbis_object.OpenBisObject.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.openbis_object.OpenBisObject.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.openbis_object.OpenBisObject.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.PhysicalData.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.dataset.PhysicalData.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.dataset.PhysicalData.__getitem__": {
+    "signature": "(self, key)",
+    "doc": ""
+  },
+  "pybis.dataset.PhysicalData.__init__": {
+    "signature": "(self, data=None)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.dataset.PhysicalData.__repr__": {
+    "signature": "(self)",
+    "doc": "Return repr(self)."
+  },
+  "pybis.dataset.PhysicalData._repr_html_": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.PropagatingThread.__init__": {
+    "signature": "(self, group=None, target=None, name=None, args=(), kwargs=None, *, daemon=None)",
+    "doc": "This constructor should always be called with keyword arguments. Arguments are:\n\n*group* should be None; reserved for future extension when a ThreadGroup\nclass is implemented.\n\n*target* is the callable object to be invoked by the run()\nmethod. Defaults to None, meaning nothing is called.\n\n*name* is the thread name. By default, a unique name is constructed of\nthe form \"Thread-N\" where N is a small decimal number.\n\n*args* is a list or tuple of arguments for the target invocation. Defaults to ().\n\n*kwargs* is a dictionary of keyword arguments for the target\ninvocation. Defaults to {}.\n\nIf a subclass overrides the constructor, it must make sure to invoke\nthe base class constructor (Thread.__init__()) before doing anything\nelse to the thread."
+  },
+  "pybis.dataset.PropagatingThread.__repr__": {
+    "signature": "(self)",
+    "doc": "Return repr(self)."
+  },
+  "pybis.dataset.PropagatingThread._after_fork": {
+    "signature": "(self, new_ident=None)",
+    "doc": ""
+  },
+  "pybis.dataset.PropagatingThread._bootstrap": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.PropagatingThread._bootstrap_inner": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.PropagatingThread._delete": {
+    "signature": "(self)",
+    "doc": "Remove current thread from the dict of currently running threads."
+  },
+  "pybis.dataset.PropagatingThread._set_ident": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.PropagatingThread._set_native_id": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.PropagatingThread.getName": {
+    "signature": "(self)",
+    "doc": "Return a string used for identification purposes only.\n\nThis method is deprecated, use the name attribute instead."
+  },
+  "pybis.dataset.PropagatingThread.isDaemon": {
+    "signature": "(self)",
+    "doc": "Return whether this thread is a daemon.\n\nThis method is deprecated, use the daemon attribute instead."
+  },
+  "pybis.dataset.PropagatingThread.is_alive": {
+    "signature": "(self)",
+    "doc": "Return whether the thread is alive.\n\nThis method returns True just before the run() method starts until just\nafter the run() method terminates. See also the module function\nenumerate()."
+  },
+  "pybis.dataset.PropagatingThread.join": {
+    "signature": "(self, timeout=None)",
+    "doc": "Wait until the thread terminates.\n\nThis blocks the calling thread until the thread whose join() method is\ncalled terminates -- either normally or through an unhandled exception\nor until the optional timeout occurs.\n\nWhen the timeout argument is present and not None, it should be a\nfloating-point number specifying a timeout for the operation in seconds\n(or fractions thereof). As join() always returns None, you must call\nis_alive() after join() to decide whether a timeout happened -- if the\nthread is still alive, the join() call timed out.\n\nWhen the timeout argument is not present or None, the operation will\nblock until the thread terminates.\n\nA thread can be join()ed many times.\n\njoin() raises a RuntimeError if an attempt is made to join the current\nthread as that would cause a deadlock. It is also an error to join() a\nthread before it has been started and attempts to do so raises the same\nexception."
+  },
+  "pybis.dataset.PropagatingThread.run": {
+    "signature": "(self)",
+    "doc": "Method representing the thread's activity.\n\nYou may override this method in a subclass. The standard run() method\ninvokes the callable object passed to the object's constructor as the\ntarget argument, if any, with sequential and keyword arguments taken\nfrom the args and kwargs arguments, respectively."
+  },
+  "pybis.dataset.PropagatingThread.setDaemon": {
+    "signature": "(self, daemonic)",
+    "doc": "Set whether this thread is a daemon.\n\nThis method is deprecated, use the .daemon property instead."
+  },
+  "pybis.dataset.PropagatingThread.setName": {
+    "signature": "(self, name)",
+    "doc": "Set the name string for this thread.\n\nThis method is deprecated, use the name attribute instead."
+  },
+  "pybis.dataset.PropagatingThread.start": {
+    "signature": "(self)",
+    "doc": "Start the thread's activity.\n\nIt must be called at most once per thread object. It arranges for the\nobject's run() method to be invoked in a separate thread of control.\n\nThis method will raise a RuntimeError if called more than once on the\nsame thread object."
+  },
+  "pybis.things.Things.__create_data_frame": {
+    "signature": "(attrs, props, response)",
+    "doc": ""
+  },
+  "pybis.things.Things.__getitem__": {
+    "signature": "(self, key)",
+    "doc": "elegant way to fetch a certain element from the displayed list.\nIf an integer value is given, we choose the row.\nIf the key is a list, we return the desired columns (normal dataframe behaviour)\nIf the key is a non-integer value, we treat it as a primary-key lookup"
+  },
+  "pybis.things.Things.__init__": {
+    "signature": "(self, openbis_obj, entity, identifier_name='code', additional_identifier=None, start_with=None, count=None, totalCount=None, single_item_method=None, response=None, df_initializer=None, objects_initializer=None, attrs=None, props=None)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.things.Things.__iter__": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.things.Things.__len__": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.things.Things.__repr__": {
+    "signature": "(self, headers=None, sort_by=None)",
+    "doc": "Return repr(self)."
+  },
+  "pybis.things.Things._repr_html_": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.things.Things.get_children": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.things.Things.get_datasets": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.things.Things.get_samples": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.things.Things.get_parents": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.things.Things.is_df_initialised": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.things.Things.is_objects_initialised": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.dataset.ZipBuffer.__init__": {
+    "signature": "(self, openbis_obj, host, filename)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.dataset.ZipBuffer.flush": {
+    "signature": "(self)",
+    "doc": "Flush the write buffers of the stream if applicable."
+  },
+  "pybis.dataset.ZipBuffer.tell": {
+    "signature": "(self)",
+    "doc": "Return the current stream position."
+  },
+  "pybis.dataset.ZipBuffer.write": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.definitions.get_fetchoptions": {
+    "signature": "(entity, including=None)",
+    "doc": ""
+  },
+  "pybis.utils.extract_data_type": {
+    "signature": "(obj)",
+    "doc": ""
+  },
+  "pybis.utils.extract_name": {
+    "signature": "(obj)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.entity_type.DataSetType.__eq__": {
+    "signature": "(self, other)",
+    "doc": "Return self==value."
+  },
+  "pybis.entity_type.DataSetType.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, method=None, **kwargs)",
+    "doc": "This __init__ is called by OpenBisObject.__init__\nIt stores the propertyAssignments data into the _propertyAssignments\ndict"
+  },
+  "pybis.entity_type.DataSetType.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.entity_type.DataSetType.__ne__": {
+    "signature": "(self, other)",
+    "doc": "Return self!=value."
+  },
+  "pybis.entity_type.DataSetType.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.entity_type.DataSetType.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.entity_type.DataSetType.__str__": {
+    "signature": "(self)",
+    "doc": "String representation of this entity type"
+  },
+  "pybis.entity_type.DataSetType._attrs": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType._get_request_for_pa": {
+    "signature": "(self, items, item_action, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.entity_type.DataSetType._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType._set_entity_data": {
+    "signature": "(self, data=None)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.assign_property": {
+    "signature": "(self, prop, plugin=None, section=None, ordinal=None, mandatory=False, initialValueForExistingEntities=None, showInEditView=True, showRawValueInForms=True)",
+    "doc": "The \u00absection\u00bb groups certain properties.\nThe \u00abordinal\u00bb is defining the rank in the list where the property appears.\nThe \u00abmandatory\u00bb defines whether a property must be filled in. If you make a\nproperty mandatory after you already created entities, you have to define an\n\u00abinitialValueForExistingEntities\u00bb too."
+  },
+  "pybis.entity_type.DataSetType.codes": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.entity_type.DataSetType.get_next_code": {
+    "signature": "(self)",
+    "doc": "Returns the next possible code for a new instance for this entity type."
+  },
+  "pybis.entity_type.DataSetType.get_next_sequence": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.get_property_assignments": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.move_property_after": {
+    "signature": "(self, property, after_property)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.move_property_to_top": {
+    "signature": "(self, property)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.revoke_property": {
+    "signature": "(self, prop, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.DataSetType.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.entity_type.EntityType.__eq__": {
+    "signature": "(self, other)",
+    "doc": "Return self==value."
+  },
+  "pybis.entity_type.EntityType.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType.__init__": {
+    "signature": "(self, openbis_obj, data=None, method=None, **kwargs)",
+    "doc": "This __init__ is called by OpenBisObject.__init__\nIt stores the propertyAssignments data into the _propertyAssignments\ndict"
+  },
+  "pybis.entity_type.EntityType.__ne__": {
+    "signature": "(self, other)",
+    "doc": "Return self!=value."
+  },
+  "pybis.entity_type.EntityType.__str__": {
+    "signature": "(self)",
+    "doc": "String representation of this entity type"
+  },
+  "pybis.entity_type.EntityType._attrs": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType._get_request_for_pa": {
+    "signature": "(self, items, item_action, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType._set_entity_data": {
+    "signature": "(self, data=None)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType.assign_property": {
+    "signature": "(self, prop, plugin=None, section=None, ordinal=None, mandatory=False, initialValueForExistingEntities=None, showInEditView=True, showRawValueInForms=True)",
+    "doc": "The \u00absection\u00bb groups certain properties.\nThe \u00abordinal\u00bb is defining the rank in the list where the property appears.\nThe \u00abmandatory\u00bb defines whether a property must be filled in. If you make a\nproperty mandatory after you already created entities, you have to define an\n\u00abinitialValueForExistingEntities\u00bb too."
+  },
+  "pybis.entity_type.EntityType.codes": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType.get_next_code": {
+    "signature": "(self)",
+    "doc": "Returns the next possible code for a new instance for this entity type."
+  },
+  "pybis.entity_type.EntityType.get_next_sequence": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType.get_property_assignments": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType.move_property_after": {
+    "signature": "(self, property, after_property)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType.move_property_to_top": {
+    "signature": "(self, property)",
+    "doc": ""
+  },
+  "pybis.entity_type.EntityType.revoke_property": {
+    "signature": "(self, prop, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.entity_type.ExperimentType.__eq__": {
+    "signature": "(self, other)",
+    "doc": "Return self==value."
+  },
+  "pybis.entity_type.ExperimentType.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, method=None, **kwargs)",
+    "doc": "This __init__ is called by OpenBisObject.__init__\nIt stores the propertyAssignments data into the _propertyAssignments\ndict"
+  },
+  "pybis.entity_type.ExperimentType.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.entity_type.ExperimentType.__ne__": {
+    "signature": "(self, other)",
+    "doc": "Return self!=value."
+  },
+  "pybis.entity_type.ExperimentType.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.entity_type.ExperimentType.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.entity_type.ExperimentType.__str__": {
+    "signature": "(self)",
+    "doc": "String representation of this entity type"
+  },
+  "pybis.entity_type.ExperimentType._attrs": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType._get_request_for_pa": {
+    "signature": "(self, items, item_action, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.entity_type.ExperimentType._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType._set_entity_data": {
+    "signature": "(self, data=None)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.assign_property": {
+    "signature": "(self, prop, plugin=None, section=None, ordinal=None, mandatory=False, initialValueForExistingEntities=None, showInEditView=True, showRawValueInForms=True)",
+    "doc": "The \u00absection\u00bb groups certain properties.\nThe \u00abordinal\u00bb is defining the rank in the list where the property appears.\nThe \u00abmandatory\u00bb defines whether a property must be filled in. If you make a\nproperty mandatory after you already created entities, you have to define an\n\u00abinitialValueForExistingEntities\u00bb too."
+  },
+  "pybis.entity_type.ExperimentType.codes": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.entity_type.ExperimentType.get_next_code": {
+    "signature": "(self)",
+    "doc": "Returns the next possible code for a new instance for this entity type."
+  },
+  "pybis.entity_type.ExperimentType.get_next_sequence": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.get_property_assignments": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.move_property_after": {
+    "signature": "(self, property, after_property)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.move_property_to_top": {
+    "signature": "(self, property)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.revoke_property": {
+    "signature": "(self, prop, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.ExperimentType.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.entity_type.MaterialType.__eq__": {
+    "signature": "(self, other)",
+    "doc": "Return self==value."
+  },
+  "pybis.entity_type.MaterialType.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, method=None, **kwargs)",
+    "doc": "This __init__ is called by OpenBisObject.__init__\nIt stores the propertyAssignments data into the _propertyAssignments\ndict"
+  },
+  "pybis.entity_type.MaterialType.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.entity_type.MaterialType.__ne__": {
+    "signature": "(self, other)",
+    "doc": "Return self!=value."
+  },
+  "pybis.entity_type.MaterialType.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.entity_type.MaterialType.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.entity_type.MaterialType.__str__": {
+    "signature": "(self)",
+    "doc": "String representation of this entity type"
+  },
+  "pybis.entity_type.MaterialType._attrs": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType._get_request_for_pa": {
+    "signature": "(self, items, item_action, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.entity_type.MaterialType._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType._set_entity_data": {
+    "signature": "(self, data=None)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.assign_property": {
+    "signature": "(self, prop, plugin=None, section=None, ordinal=None, mandatory=False, initialValueForExistingEntities=None, showInEditView=True, showRawValueInForms=True)",
+    "doc": "The \u00absection\u00bb groups certain properties.\nThe \u00abordinal\u00bb is defining the rank in the list where the property appears.\nThe \u00abmandatory\u00bb defines whether a property must be filled in. If you make a\nproperty mandatory after you already created entities, you have to define an\n\u00abinitialValueForExistingEntities\u00bb too."
+  },
+  "pybis.entity_type.MaterialType.codes": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.entity_type.MaterialType.get_next_code": {
+    "signature": "(self)",
+    "doc": "Returns the next possible code for a new instance for this entity type."
+  },
+  "pybis.entity_type.MaterialType.get_next_sequence": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.get_property_assignments": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.move_property_after": {
+    "signature": "(self, property, after_property)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.move_property_to_top": {
+    "signature": "(self, property)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.revoke_property": {
+    "signature": "(self, prop, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.MaterialType.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyAssignment.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyAssignment.__init__": {
+    "signature": "(self, openbis_obj, data=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.entity_type.PropertyAssignment.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.entity_type.PropertyAssignment._attrs": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyAssignment.get_property_type": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyType.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.entity_type.PropertyType.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyType.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.entity_type.PropertyType.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.entity_type.PropertyType.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.entity_type.PropertyType.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.entity_type.PropertyType._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyType._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.entity_type.PropertyType._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyType.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.entity_type.PropertyType.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyType.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyType.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.PropertyType.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.entity_type.SampleType.__eq__": {
+    "signature": "(self, other)",
+    "doc": "Return self==value."
+  },
+  "pybis.entity_type.SampleType.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, method=None, **kwargs)",
+    "doc": "This __init__ is called by OpenBisObject.__init__\nIt stores the propertyAssignments data into the _propertyAssignments\ndict"
+  },
+  "pybis.entity_type.SampleType.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.entity_type.SampleType.__ne__": {
+    "signature": "(self, other)",
+    "doc": "Return self!=value."
+  },
+  "pybis.entity_type.SampleType.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.entity_type.SampleType.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.entity_type.SampleType.__str__": {
+    "signature": "(self)",
+    "doc": "String representation of this entity type"
+  },
+  "pybis.entity_type.SampleType._attrs": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType._get_request_for_pa": {
+    "signature": "(self, items, item_action, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.entity_type.SampleType._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType._set_entity_data": {
+    "signature": "(self, data=None)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.add_semantic_annotation": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.assign_property": {
+    "signature": "(self, prop, plugin=None, section=None, ordinal=None, mandatory=False, initialValueForExistingEntities=None, showInEditView=True, showRawValueInForms=True)",
+    "doc": "The \u00absection\u00bb groups certain properties.\nThe \u00abordinal\u00bb is defining the rank in the list where the property appears.\nThe \u00abmandatory\u00bb defines whether a property must be filled in. If you make a\nproperty mandatory after you already created entities, you have to define an\n\u00abinitialValueForExistingEntities\u00bb too."
+  },
+  "pybis.entity_type.SampleType.codes": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.entity_type.SampleType.get_next_code": {
+    "signature": "(self)",
+    "doc": "Returns the next possible code for a new instance for this entity type."
+  },
+  "pybis.entity_type.SampleType.get_next_sequence": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.get_property_assignments": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.get_semantic_annotations": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.move_property_after": {
+    "signature": "(self, property, after_property)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.move_property_to_top": {
+    "signature": "(self, property)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.revoke_property": {
+    "signature": "(self, prop, force=False)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.entity_type.SampleType.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.semantic_annotation.SemanticAnnotation.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.semantic_annotation.SemanticAnnotation.__init__": {
+    "signature": "(self, openbis_obj, isNew=True, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.semantic_annotation.SemanticAnnotation.__repr__": {
+    "signature": "(self)",
+    "doc": "Return repr(self)."
+  },
+  "pybis.semantic_annotation.SemanticAnnotation._create": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.semantic_annotation.SemanticAnnotation._repr_html_": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.semantic_annotation.SemanticAnnotation._update": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.semantic_annotation.SemanticAnnotation.delete": {
+    "signature": "(self, reason)",
+    "doc": ""
+  },
+  "pybis.semantic_annotation.SemanticAnnotation.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.experiment.Experiment.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.experiment.Experiment.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.experiment.Experiment.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.experiment.Experiment.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.experiment.Experiment.__str__": {
+    "signature": "(self)",
+    "doc": "Return str(self)."
+  },
+  "pybis.experiment.Experiment._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.experiment.Experiment._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.add_samples": {
+    "signature": "(self, *samples)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.del_samples": {
+    "signature": "(self, samples)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.experiment.Experiment.get_datasets": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.get_samples": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.get_projects": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.set_properties": {
+    "signature": "(self, properties)",
+    "doc": ""
+  },
+  "pybis.experiment.Experiment.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download._get_json": {
+    "signature": "(response)",
+    "doc": ""
+  },
+  "pybis.fast_download.comma_separated_items": {
+    "signature": "(arr)",
+    "doc": "Create comma-separated string from the list of items"
+  },
+  "pybis.fast_download.create_session": {
+    "signature": "(download_url_base)",
+    "doc": "Create a session object to handle retries in case of server failure"
+  },
+  "pybis.fast_download.deserialize_chunk": {
+    "signature": "(byte_array)",
+    "doc": ""
+  },
+  "pybis.fast_download.make_fileserver_body_params": {
+    "signature": "(server_information, **params)",
+    "doc": "create a proper pam of key-values for fileserver request"
+  },
+  "pybis.fast_download.post_request": {
+    "signature": "(session, full_url, verify_certificates, request, parse_response=True)",
+    "doc": "Perform POST call to server"
+  },
+  "pybis.fast_download.queue_chunks": {
+    "signature": "(session, base_url, download_session_id, chunks, verify_certificates, server_information)",
+    "doc": "Queue particular session chunks for download"
+  },
+  "pybis.fast_download.AtomicChecker.__init__": {
+    "signature": "(self, values_to_download: set)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.fast_download.AtomicChecker.break_count": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.AtomicChecker.get_remaining_values": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.AtomicChecker.remove_value": {
+    "signature": "(self, value)",
+    "doc": ""
+  },
+  "pybis.fast_download.AtomicChecker.repeat_call": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.AtomicChecker.should_continue": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.DownloadThread.__init__": {
+    "signature": "(self, session, download_url_base, download_session_id, stream_id, counter: pybis.fast_download.AtomicChecker, verify_certificates, create_default_folders, destination, server_information, number_of_chunks=1)",
+    "doc": "This constructor should always be called with keyword arguments. Arguments are:\n\n*group* should be None; reserved for future extension when a ThreadGroup\nclass is implemented.\n\n*target* is the callable object to be invoked by the run()\nmethod. Defaults to None, meaning nothing is called.\n\n*name* is the thread name. By default, a unique name is constructed of\nthe form \"Thread-N\" where N is a small decimal number.\n\n*args* is a list or tuple of arguments for the target invocation. Defaults to ().\n\n*kwargs* is a dictionary of keyword arguments for the target\ninvocation. Defaults to {}.\n\nIf a subclass overrides the constructor, it must make sure to invoke\nthe base class constructor (Thread.__init__()) before doing anything\nelse to the thread."
+  },
+  "pybis.fast_download.DownloadThread.__repr__": {
+    "signature": "(self)",
+    "doc": "Return repr(self)."
+  },
+  "pybis.fast_download.DownloadThread._after_fork": {
+    "signature": "(self, new_ident=None)",
+    "doc": ""
+  },
+  "pybis.fast_download.DownloadThread._bootstrap": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.DownloadThread._bootstrap_inner": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.DownloadThread._delete": {
+    "signature": "(self)",
+    "doc": "Remove current thread from the dict of currently running threads."
+  },
+  "pybis.fast_download.DownloadThread._set_ident": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.DownloadThread._set_native_id": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.fast_download.DownloadThread.getName": {
+    "signature": "(self)",
+    "doc": "Return a string used for identification purposes only.\n\nThis method is deprecated, use the name attribute instead."
+  },
+  "pybis.fast_download.DownloadThread.isDaemon": {
+    "signature": "(self)",
+    "doc": "Return whether this thread is a daemon.\n\nThis method is deprecated, use the daemon attribute instead."
+  },
+  "pybis.fast_download.DownloadThread.is_alive": {
+    "signature": "(self)",
+    "doc": "Return whether the thread is alive.\n\nThis method returns True just before the run() method starts until just\nafter the run() method terminates. See also the module function\nenumerate()."
+  },
+  "pybis.fast_download.DownloadThread.join": {
+    "signature": "(self, timeout=None)",
+    "doc": "Wait until the thread terminates.\n\nThis blocks the calling thread until the thread whose join() method is\ncalled terminates -- either normally or through an unhandled exception\nor until the optional timeout occurs.\n\nWhen the timeout argument is present and not None, it should be a\nfloating-point number specifying a timeout for the operation in seconds\n(or fractions thereof). As join() always returns None, you must call\nis_alive() after join() to decide whether a timeout happened -- if the\nthread is still alive, the join() call timed out.\n\nWhen the timeout argument is not present or None, the operation will\nblock until the thread terminates.\n\nA thread can be join()ed many times.\n\njoin() raises a RuntimeError if an attempt is made to join the current\nthread as that would cause a deadlock. It is also an error to join() a\nthread before it has been started and attempts to do so raises the same\nexception."
+  },
+  "pybis.fast_download.DownloadThread.run": {
+    "signature": "(self)",
+    "doc": "Method representing the thread's activity.\n\nYou may override this method in a subclass. The standard run() method\ninvokes the callable object passed to the object's constructor as the\ntarget argument, if any, with sequential and keyword arguments taken\nfrom the args and kwargs arguments, respectively."
+  },
+  "pybis.fast_download.DownloadThread.save_to_file": {
+    "signature": "(self, deserialized_response)",
+    "doc": ""
+  },
+  "pybis.fast_download.DownloadThread.setDaemon": {
+    "signature": "(self, daemonic)",
+    "doc": "Set whether this thread is a daemon.\n\nThis method is deprecated, use the .daemon property instead."
+  },
+  "pybis.fast_download.DownloadThread.setName": {
+    "signature": "(self, name)",
+    "doc": "Set the name string for this thread.\n\nThis method is deprecated, use the name attribute instead."
+  },
+  "pybis.fast_download.DownloadThread.start": {
+    "signature": "(self)",
+    "doc": "Start the thread's activity.\n\nIt must be called at most once per thread object. It arranges for the\nobject's run() method to be invoked in a separate thread of control.\n\nThis method will raise a RuntimeError if called more than once on the\nsame thread object."
+  },
+  "pybis.utils.extract_nested_permid": {
+    "signature": "(permid)",
+    "doc": ""
+  },
+  "pybis.group.Group.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.group.Group.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.group.Group.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.group.Group.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.group.Group.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.group.Group.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.group.Group._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.group.Group._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.group.Group._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.group.Group.assign_role": {
+    "signature": "(self, role, **kwargs)",
+    "doc": "Assign a role to this group. If no additional attribute is provided,\nroleLevel will default to INSTANCE. If a space attribute is provided,\nthe roleLevel will be SPACE. If a project attribute is provided,\nroleLevel will be PROJECT.\n\nUsage::\n    group.assign_role(role='ADMIN')\n    group.assign_role(role='ADMIN', space='TEST_SPACE')"
+  },
+  "pybis.group.Group.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.group.Group.get_persons": {
+    "signature": "(self)",
+    "doc": "Returns a Things object wich contains all Persons (Users)\nthat belong to this group."
+  },
+  "pybis.group.Group.get_roles": {
+    "signature": "(self, **search_args)",
+    "doc": "Get all roles that are assigned to this group.\nProvide additional search arguments to refine your search.\n\nUsage::\n    group.get_roles()\n    group.get_roles(space='TEST_SPACE')"
+  },
+  "pybis.group.Group.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.group.Group.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.group.Group.revoke_role": {
+    "signature": "(self, role, space=None, project=None, reason='no reason specified')",
+    "doc": "Revoke a role from this group."
+  },
+  "pybis.group.Group.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.group.Group.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.material.Material.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.material.Material.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.material.Material.__init__": {
+    "signature": "(self, openbis_obj, type, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.material.Material.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.material.Material.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.material.Material.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.material.Material._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.material.Material._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.material.Material._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.material.Material.delete": {
+    "signature": "(self, reason='no reason')",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.material.Material.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.material.Material.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.material.Material.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.material.Material.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.property.PropertyHolder.__call__": {
+    "signature": "(self, *args)",
+    "doc": "Call self as a function."
+  },
+  "pybis.property.PropertyHolder.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.property.PropertyHolder.__getattr__": {
+    "signature": "(self, name)",
+    "doc": "attribute syntax can be found out by\nadding an underscore at the end of the property name"
+  },
+  "pybis.property.PropertyHolder.__getitem__": {
+    "signature": "(self, key)",
+    "doc": "For properties that contain either a dot or a dash or any other non-valid method character,\na user can use a key-lookup instead, e.g. sample.props['my-weird.property-name']"
+  },
+  "pybis.property.PropertyHolder.__init__": {
+    "signature": "(self, openbis_obj, type=None)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.property.PropertyHolder.__repr__": {
+    "signature": "(self)",
+    "doc": "Return repr(self)."
+  },
+  "pybis.property.PropertyHolder.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "This special method allows a PropertyHolder object\nto check the attributes that are assigned to that object"
+  },
+  "pybis.property.PropertyHolder.__setitem__": {
+    "signature": "(self, key, value)",
+    "doc": "For properties that contain either a dot or a dash or any other non-valid method character,\na user can use a key instead, e.g. sample.props['my-weird.property-name']"
+  },
+  "pybis.property.PropertyHolder._all_props": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.property.PropertyHolder._repr_html_": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.property.PropertyHolder.all": {
+    "signature": "(self)",
+    "doc": "Returns the properties as an array"
+  },
+  "pybis.property.PropertyHolder.all_nonempty": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.property.PropertyHolder.get": {
+    "signature": "(self, *args)",
+    "doc": ""
+  },
+  "pybis.property.PropertyHolder.set": {
+    "signature": "(self, *args)",
+    "doc": ""
+  },
+  "pybis.property_reformatter.PropertyReformatter.__init__": {
+    "signature": "(self, openbis_obj)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.property_reformatter.PropertyReformatter._format_timestamp": {
+    "signature": "(self, value)",
+    "doc": ""
+  },
+  "pybis.property_reformatter.PropertyReformatter.format": {
+    "signature": "(self, properties)",
+    "doc": ""
+  },
+  "pybis.property_reformatter.PropertyReformatter.to_array": {
+    "signature": "(self, data_type, prop_value)",
+    "doc": ""
+  },
+  "pybis.property_reformatter.PropertyReformatter.to_spreadsheet": {
+    "signature": "(self, rawValue)",
+    "doc": ""
+  },
+  "pybis.openbis_object.Transaction.__init__": {
+    "signature": "(self, *entities)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.openbis_object.Transaction.add": {
+    "signature": "(self, entity_obj)",
+    "doc": "Collect the creations or updates of entities.\nself.entities = {\n    \"sample\": {\n        {\n            \"create\": [...],\n            \"update\": [...]\n        },\n    },\n    \"dataSet\": {\n        {\n            \"update\": [...]\n        }\n    }\n}"
+  },
+  "pybis.openbis_object.Transaction.commit": {
+    "signature": "(self)",
+    "doc": "Merge the individual requests to Make one single request.\nFor each entity-type and mode (create, update) an individual request will be sent,\nas the method name differs."
+  },
+  "pybis.utils.extract_id": {
+    "signature": "(id)",
+    "doc": ""
+  },
+  "pybis.utils.extract_nested_identifier": {
+    "signature": "(ident)",
+    "doc": ""
+  },
+  "pybis.utils.extract_userId": {
+    "signature": "(user)",
+    "doc": ""
+  },
+  "pybis.person.Person.__dir__": {
+    "signature": "(self)",
+    "doc": "all the available methods and attributes that should be displayed\nwhen using the autocompletion feature (TAB) in Jupyter"
+  },
+  "pybis.person.Person.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.person.Person.__init__": {
+    "signature": "(self, openbis_obj, data=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.person.Person.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.person.Person.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.person.Person.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.person.Person.__str__": {
+    "signature": "(self)",
+    "doc": "Return str(self)."
+  },
+  "pybis.person.Person._create_role_assigment_data_frame": {
+    "signature": "(self, attrs, props, response)",
+    "doc": ""
+  },
+  "pybis.person.Person._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.person.Person._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.person.Person._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.person.Person.assign_role": {
+    "signature": "(self, role, **kwargs)",
+    "doc": ""
+  },
+  "pybis.person.Person.delete": {
+    "signature": "(self, reason)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.person.Person.get_roles": {
+    "signature": "(self, **search_args)",
+    "doc": "Get all roles that are assigned to this person.\nProvide additional search arguments to refine your search.\n\nUsage::\n    person.get_roles()\n    person.get_roles(space='TEST_SPACE')"
+  },
+  "pybis.person.Person.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.person.Person.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.person.Person.revoke_role": {
+    "signature": "(self, role, space=None, project=None, reason='no reason specified')",
+    "doc": "Revoke a role from this person."
+  },
+  "pybis.person.Person.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.person.Person.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.utils.is_identifier": {
+    "signature": "(ident)",
+    "doc": ""
+  },
+  "pybis.utils.is_permid": {
+    "signature": "(ident)",
+    "doc": ""
+  },
+  "pybis.project.Project.__dir__": {
+    "signature": "(self)",
+    "doc": "all the available methods and attributes that should be displayed\nwhen using the autocompletion feature (TAB) in Jupyter"
+  },
+  "pybis.project.Project.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.project.Project.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.project.Project.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.project.Project.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.project.Project.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.project.Project._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.project.Project._modifiable_attrs": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.project.Project._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.project.Project._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.project.Project.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.project.Project.get_experiments": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.project.Project.get_datasets": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.project.Project.get_sample": {
+    "signature": "(self, sample_code)",
+    "doc": ""
+  },
+  "pybis.project.Project.get_samples": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.project.Project.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.project.Project.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.project.Project.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.project.Project.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.utils.check_datatype": {
+    "signature": "(type_name, value, is_multi_value=False)",
+    "doc": ""
+  },
+  "pybis.property_reformatter.is_of_openbis_supported_date_format": {
+    "signature": "(value)",
+    "doc": ""
+  },
+  "pybis.spreadsheet.Spreadsheet.__init__": {
+    "signature": "(self, columns=10, rows=10)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.spreadsheet.Spreadsheet.__repr__": {
+    "signature": "(self)",
+    "doc": "Return repr(self)."
+  },
+  "pybis.spreadsheet.Spreadsheet.__str__": {
+    "signature": "(self)",
+    "doc": "Return str(self)."
+  },
+  "pybis.spreadsheet.Spreadsheet.from_dict": {
+    "signature": "(data)",
+    "doc": ""
+  },
+  "pybis.spreadsheet.Spreadsheet.to_json": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis._common_search": {
+    "signature": "(search_type, value, comparison='StringEqualToValue')",
+    "doc": ""
+  },
+  "pybis.pybis._criteria_for_code": {
+    "signature": "(code)",
+    "doc": ""
+  },
+  "pybis.pybis._criteria_for_permId": {
+    "signature": "(permId)",
+    "doc": ""
+  },
+  "pybis.pybis._gen_search_criteria": {
+    "signature": "(req)",
+    "doc": ""
+  },
+  "pybis.pybis._list_update": {
+    "signature": "(ids=None, entity=None, action='Add')",
+    "doc": "creates an action item to add, set or remove ids."
+  },
+  "pybis.pybis._subcriteria_for": {
+    "signature": "(thing, entity, parents_or_children='', operator='AND')",
+    "doc": "Returns the sub-search criteria for \u00abthing\u00bb, which can be either:\n- a python object (sample, dataSet, experiment)\n- a permId\n- an identifier\n- a code"
+  },
+  "pybis.pybis._subcriteria_for_code": {
+    "signature": "(code, entity)",
+    "doc": "Creates the often used search criteria for code values. Returns a dictionary.\n\nExample::\n    _subcriteria_for_code(\"username\", \"space\")\n\n{\n    \"criteria\": [\n        {\n            \"fieldType\": \"ATTRIBUTE\",\n            \"@type\": \"as.dto.common.search.CodeSearchCriteria\",\n            \"fieldName\": \"code\",\n            \"fieldValue\": {\n                \"@type\": \"as.dto.common.search.StringEqualToValue\",\n                \"value\": \"USERNAME\"\n            }\n        }\n    ],\n    \"operator\": \"AND\",\n    \"@type\": \"as.dto.space.search.SpaceSearchCriteria\"\n}"
+  },
+  "pybis.pybis._subcriteria_for_code_new": {
+    "signature": "(codes, entity, parents_or_children='', operator='AND')",
+    "doc": ""
+  },
+  "pybis.pybis._subcriteria_for_identifier": {
+    "signature": "(ids, entity, parents_or_children='', operator='AND')",
+    "doc": ""
+  },
+  "pybis.pybis._subcriteria_for_is_finished": {
+    "signature": "(is_finished)",
+    "doc": ""
+  },
+  "pybis.pybis._subcriteria_for_permid": {
+    "signature": "(permids, entity, parents_or_children='', operator='AND')",
+    "doc": ""
+  },
+  "pybis.pybis._subcriteria_for_permid_new": {
+    "signature": "(codes, entity, parents_or_children='', operator='AND')",
+    "doc": ""
+  },
+  "pybis.pybis._subcriteria_for_properties": {
+    "signature": "(prop, value, entity)",
+    "doc": "This internal method creates the JSON RPC criterias for searching\nin properties. It distinguishes between numbers, dates and strings\nand uses the comparative operator (< > >= <=), if available.\ncreationDate and modificationDate attributes can be searched as well.\nTo search in the properties of parents, children, etc. the user has to\nprefix the propery accordingly:\n\n- parent_propertyName\n- child_propertyName\n- container_propertyName"
+  },
+  "pybis.pybis._subcriteria_for_status": {
+    "signature": "(status_value)",
+    "doc": ""
+  },
+  "pybis.pybis._subcriteria_for_tags": {
+    "signature": "(tags)",
+    "doc": ""
+  },
+  "pybis.pybis._subcriteria_for_type": {
+    "signature": "(code, entity)",
+    "doc": ""
+  },
+  "pybis.pybis._subcriteria_for_userId": {
+    "signature": "(userId)",
+    "doc": ""
+  },
+  "pybis.pybis._tagIds_for_tags": {
+    "signature": "(tags=None, action='Add')",
+    "doc": "creates an action item to add or remove tags.\nAction is either 'Add', 'Remove' or 'Set'"
+  },
+  "pybis.pybis._type_for_id": {
+    "signature": "(ident, entity)",
+    "doc": "Returns the data type for a given identifier/permId for use with the API call, e.g.\n{\n    \"identifier\": \"/DEFAULT/SAMPLE_NAME\",\n    \"@type\": \"as.dto.sample.id.SampleIdentifier\"\n}\nor\n{\n    \"permId\": \"20160817175233002-331\",\n    \"@type\": \"as.dto.sample.id.SamplePermId\"\n}"
+  },
+  "pybis.pybis.crc32": {
+    "signature": "(fileName)",
+    "doc": "since Python3 the zlib module returns unsigned integers (2.7: signed int)"
+  },
+  "pybis.utils.extract_attr": {
+    "signature": "(attr)",
+    "doc": ""
+  },
+  "pybis.utils.extract_deletion": {
+    "signature": "(obj)",
+    "doc": ""
+  },
+  "pybis.utils.extract_identifier": {
+    "signature": "(ident)",
+    "doc": ""
+  },
+  "pybis.utils.extract_identifiers": {
+    "signature": "(items)",
+    "doc": ""
+  },
+  "pybis.utils.extract_nested_permids": {
+    "signature": "(items)",
+    "doc": ""
+  },
+  "pybis.pybis.get_field_value_search": {
+    "signature": "(field, value, comparison='StringEqualToValue')",
+    "doc": ""
+  },
+  "pybis.pybis.get_saved_pats": {
+    "signature": "(hostname=None, sessionName=None)",
+    "doc": "return all personal access tokens stored on disk."
+  },
+  "pybis.pybis.get_saved_tokens": {
+    "signature": "()",
+    "doc": ""
+  },
+  "pybis.pybis.get_search_criteria": {
+    "signature": "(entity, **search_args)",
+    "doc": ""
+  },
+  "pybis.pybis.get_search_type_for_entity": {
+    "signature": "(entity, operator=None)",
+    "doc": "Returns a dictionary containing the correct search criteria type\nfor a given entity.\n\nExample::\n    get_search_type_for_entity('space')\n    # returns:\n    {'@type': 'as.dto.space.search.SpaceSearchCriteria'}"
+  },
+  "pybis.pybis.get_token_for_hostname": {
+    "signature": "(hostname, session_token_needed=True)",
+    "doc": "Searches for a stored token for a given host in this order:\n~/.pybis/hostname.token"
+  },
+  "pybis.utils.is_number": {
+    "signature": "(value)",
+    "doc": "detects whether a given value\nis either an integer or a floating point number\n1, 2, 3,  etc.\n1.0, 2.1, etc.\n.5, .6    etc."
+  },
+  "pybis.pybis.is_personal_access_token": {
+    "signature": "(token: str)",
+    "doc": ""
+  },
+  "pybis.pybis.is_session_token": {
+    "signature": "(token: str)",
+    "doc": ""
+  },
+  "pybis.pybis.now": {
+    "signature": "()",
+    "doc": ""
+  },
+  "pybis.pybis.save_pats_to_disk": {
+    "signature": "(hostname: str, url: str, resp: dict) -> None",
+    "doc": ""
+  },
+  "pybis.utils.split_identifier": {
+    "signature": "(ident)",
+    "doc": ""
+  },
+  "pybis.pybis.ExternalDMS.__dir__": {
+    "signature": "(self)",
+    "doc": "all the available methods and attributes that should be displayed\nwhen using the autocompletion feature (TAB) in Jupyter"
+  },
+  "pybis.pybis.ExternalDMS.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.pybis.ExternalDMS.__init__": {
+    "signature": "(self, openbis_obj, data=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.pybis.ExternalDMS.__str__": {
+    "signature": "(self)",
+    "doc": "Return str(self)."
+  },
+  "pybis.pybis.Openbis.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.pybis.Openbis.__init__": {
+    "signature": "(self, url=None, verify_certificates=True, token=None, use_cache=True, allow_http_but_do_not_use_this_in_production_and_only_within_safe_networks=False)",
+    "doc": "Initialize a new connection to an openBIS server.\n\nExamples:\n    o = Openbis('https://openbis.example.com')\n    o_test = Openbis('https://test_openbis.example.com:8443', verify_certificates=False)\n\nArgs:\n    url (str): https://openbis.example.com\n    verify_certificates (bool): set to False when you use self-signed certificates\n    token (str): a valid openBIS token. If not set, pybis will try to read a valid token from ~/.pybis\n    use_cache: make openBIS to store spaces, projects, sample types, vocabulary terms and oder more-or-less static objects to optimise speed\n    allow_http_but_do_not_use_this_in_production_and_only_within_safe_networks (bool): False"
+  },
+  "pybis.pybis.Openbis._create_get_request": {
+    "signature": "(self, method_name, entity, permids, options, foType)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._dataset_list_for_response": {
+    "signature": "(self, response, attrs=None, props=None, start_with=None, count=None, totalCount=0, objects=None, parsed=False)",
+    "doc": "returns a Things object, containing a DataFrame plus some additional information"
+  },
+  "pybis.pybis.Openbis._decode_property": {
+    "signature": "(self, entity, property)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._delete_saved_token": {
+    "signature": "(self, os_home=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._gen_fetchoptions": {
+    "signature": "(self, options, foType)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._get_attributes": {
+    "signature": "(self, type_name, types, additional_attributes, optional_attributes)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._get_dss_url": {
+    "signature": "(self, dss_code=None)",
+    "doc": "internal method to get the downloadURL of a datastore."
+  },
+  "pybis.pybis.Openbis._get_fetchopts_for_attrs": {
+    "signature": "(self, attrs=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._get_saved_token": {
+    "signature": "(self)",
+    "doc": "Read the token from the .pybis, on the default user location"
+  },
+  "pybis.pybis.Openbis._get_types_of": {
+    "signature": "(self, method_name, entity, type_name=None, start_with=None, count=None, additional_attributes=None, optional_attributes=None)",
+    "doc": "Returns a list of all available types of an entity.\nIf the name of the entity-type is given, it returns a PropertyAssignments object"
+  },
+  "pybis.pybis.Openbis._get_username": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._object_cache": {
+    "signature": "(self, entity=None, code=None, value=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._object_to_object_id": {
+    "signature": "(obj, identifierType, permIdType)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._password": {
+    "signature": "(self, password=None, pstore={})",
+    "doc": "An elegant way to store passwords which are used later\nwithout giving the user an easy possibility to retrieve it."
+  },
+  "pybis.pybis.Openbis._post_request": {
+    "signature": "(self, resource, request)",
+    "doc": "internal method, used to handle all post requests and serializing / deserializing\ndata"
+  },
+  "pybis.pybis.Openbis._post_request_full_url": {
+    "signature": "(self, full_url, request)",
+    "doc": "internal method, used to handle all post requests and serializing / deserializing\ndata"
+  },
+  "pybis.pybis.Openbis._property_type_things": {
+    "signature": "(self, objects, start_with=None, count=None, totalCount=None)",
+    "doc": "takes a list of objects and returns a Things object"
+  },
+  "pybis.pybis.Openbis._recover_session": {
+    "signature": "(self, full_url, request)",
+    "doc": "Current token seems to be expired,\ntry to use other means to connect."
+  },
+  "pybis.pybis.Openbis._repr_html_": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._sample_list_for_response": {
+    "signature": "(self, response, attrs=None, props=None, start_with=None, count=None, totalCount=0, parsed=False)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._save_token_to_disk": {
+    "signature": "(self, os_home=None)",
+    "doc": "saves the session token to the disk, usually here: ~/.pybis/hostname.token. When a new Openbis instance is created, it tries to read this saved token by default."
+  },
+  "pybis.pybis.Openbis._search_semantic_annotations": {
+    "signature": "(self, criteria)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis._tag_list_for_response": {
+    "signature": "(self, response, totalCount=0)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.assign_role": {
+    "signature": "(self, role, **args)",
+    "doc": "general method to assign a role to either\n    - a person\n    - a group\nThe scope is either\n    - the whole instance\n    - a space\n    - a project"
+  },
+  "pybis.pybis.Openbis.clear_cache": {
+    "signature": "(self, entity=None)",
+    "doc": "Empty the internal object cache\nIf you do not specify any entity, the complete cache is cleared.\nAs entity, you can specify either:\nspace, project, vocabulary, term, sampleType, experimentType, dataSetType"
+  },
+  "pybis.pybis.Openbis.confirm_deletions": {
+    "signature": "(self, deletion_ids)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.create_external_data_management_system": {
+    "signature": "(self, code, label, address, address_type='FILE_SYSTEM')",
+    "doc": "Create an external DMS.\n:param code: An openBIS code for the external DMS.\n:param label: A human-readable label.\n:param address: The address for accessing the external DMS. E.g., a URL.\n:param address_type: One of OPENBIS, URL, or FILE_SYSTEM\n:return:"
+  },
+  "pybis.pybis.Openbis.create_permId": {
+    "signature": "(self)",
+    "doc": "Have the server generate a new permId"
+  },
+  "pybis.pybis.Openbis.data_set_to_data_set_id": {
+    "signature": "(data_set)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.decode_attribute": {
+    "signature": "(entity, attribute)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.delete_content_copy": {
+    "signature": "(self, data_set_id, content_copy)",
+    "doc": "Deletes a content copy from a data set.\n:param data_set_id: Id of the data set containing the content copy\n:param content_copy: The content copy to be deleted"
+  },
+  "pybis.pybis.Openbis.delete_entity": {
+    "signature": "(self, entity, id, reason, id_name='permId')",
+    "doc": "Deletes Spaces, Projects, Experiments, Samples and DataSets"
+  },
+  "pybis.pybis.Openbis.delete_openbis_entity": {
+    "signature": "(self, entity, objectId, reason='No reason given')",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.execute_custom_as_service": {
+    "signature": "(self, code)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.execute_custom_dss_service": {
+    "signature": "(self, code, parameters)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.experiment_to_experiment_id": {
+    "signature": "(experiment)",
+    "doc": "Take experiment which may be a string or object and return an identifier for it."
+  },
+  "pybis.pybis.Openbis.external_data_managment_system_to_dms_id": {
+    "signature": "(self, dms)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.gen_code": {
+    "signature": "(self, entity, prefix='') -> str",
+    "doc": "Get the next sequence number for a Sample, Experiment, DataSet and Material. Other entities are currently not supported.\nUsage::\n    gen_code('sample', 'SAM-')\n    gen_code('collection', 'COL-')\n    gen_code('dataset', '')"
+  },
+  "pybis.pybis.Openbis.gen_codes": {
+    "signature": "(self, entity: str, prefix: str = '', count: int = 1) -> List[str]",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.gen_permId": {
+    "signature": "(self, count=1)",
+    "doc": "Generate a permId (or many permIds) for a dataSet"
+  },
+  "pybis.pybis.Openbis.gen_token_path": {
+    "signature": "(self, os_home=None)",
+    "doc": "generates a path to the token file.\nThe token is usually saved in a file called\n~/.pybis/hostname.token"
+  },
+  "pybis.pybis.Openbis.get_experiment": {
+    "signature": "(self, code, withAttachments=False, only_data=False, use_cache=True)",
+    "doc": "Returns an experiment object for a given identifier (code)."
+  },
+  "pybis.pybis.Openbis.get_experiment_type": {
+    "signature": "(self, type, only_data=False, **kwargs)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_experiment_types": {
+    "signature": "(self, type=None, start_with=None, count=None)",
+    "doc": "Returns a list of all available experiment types"
+  },
+  "pybis.pybis.Openbis.get_experiments": {
+    "signature": "(self, code=None, permId=None, type=None, space=None, project=None, start_with=None, count=None, tags=None, is_finished=None, attrs=None, props=None, where=None, **properties)",
+    "doc": "Returns a DataFrame of all samples for a given space/project (or any combination).\nThe default result contains only basic attributes, i.e identifier, permId, type, registrator,\nregistrationDate, modifier, modificationDate. Additional attributes may be downloaded by specifying\n'attrs' list.\n\nFilters:\n--------\nspace        -- a space code or a space object\nproject      -- a project code or a project object\ntags         -- only experiments with the specified tags\ntype         -- a experimentType code\nwhere        -- key-value pairs of property values to search for\n\nPaging:\n-------\nstart_with   -- default=None\ncount        -- number of samples that should be fetched. default=None.\n\nInclude:\n--------\nattrs        -- list of all desired attributes. Examples:\n                space, project, experiment: just return their identifier\n                space.code, project.code, experiment.code\n                registrator.email, registrator.firstName\n                type.generatedCodePrefix\nprops        -- list of all desired properties. Returns an empty string if\n                a) property is not present\n                b) property is not defined for this sampleType"
+  },
+  "pybis.pybis.Openbis.get_dataset": {
+    "signature": "(self, permIds, only_data=False, props=None, **kvals)",
+    "doc": "fetch a dataset and some metadata attached to it:\n- properties\n- sample\n- parents\n- children\n- containers\n- dataStore\n- physicalData\n- linkedData\n:return: a DataSet object"
+  },
+  "pybis.pybis.Openbis.get_dataset_type": {
+    "signature": "(self, type, only_data=False, **kwargs)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_dataset_types": {
+    "signature": "(self, type=None, start_with=None, count=None)",
+    "doc": "Returns a list of all available dataSet types"
+  },
+  "pybis.pybis.Openbis.get_datasets": {
+    "signature": "(self, permId=None, code=None, type=None, withParents=None, withChildren=None, start_with=None, count=None, kind=None, status=None, sample=None, experiment=None, collection=None, project=None, space=None, tags=None, attrs=None, props=None, where=None, **properties)",
+    "doc": "Returns a DataFrame of all dataSets for a given project/experiment/sample (or any combination).\nThe default result contains only basic attributes, i.e permId, type, experiment, sample, registrationDate,\nmodificationDate, location, status, presentInArchive, size.\nAdditional attributes may be downloaded by specifying 'attrs' list.\n\nFilters\n-------\npermId       -- the permId is the unique identifier of a dataSet. A list of permIds can be provided.\ncode         -- actually a synonym for the permId of the dataSet.\nproject      -- a project code or a project object\nexperiment   -- an experiment code or an experiment object\nsample       -- a sample code/permId or a sample/object\ncollection   -- same as experiment\ntags         -- only return dataSets with the specified tags\ntype         -- a dataSetType code\nwhere        -- key-value pairs of property values to search for\nwithParents  -- the list of parent's permIds in a column 'parents'\nwithChildren -- the list of children's permIds in a column 'children'\n\nPaging\n------\nstart_with   -- default=None\ncount        -- number of dataSets that should be fetched. default=None.\n\nInclude in result list\n----------------------\nattrs        -- list of all desired attributes. Examples:\n                project, experiment, sample: returns identifier\n                parents, children, components, containers: return a list of identifiers\n                space.code, project.code, experiment.code\n                registrator.email, registrator.firstName\n                type.generatedCodePrefix\nprops        -- list of all desired properties. Returns an empty string if\n                a) property is not present\n                b) property is not defined for this dataSetType"
+  },
+  "pybis.pybis.Openbis.get_datastores": {
+    "signature": "(self)",
+    "doc": "Get a list of all available datastores. Usually there is only one, but in some cases\nthere might be multiple servers. If you upload a file, you need to specifiy the datastore you want\nthe file uploaded to."
+  },
+  "pybis.pybis.Openbis.get_deletions": {
+    "signature": "(self, start_with=None, count=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_entity_type": {
+    "signature": "(self, entity, identifier, cls, method=None, only_data=False, with_vocabulary=False, use_cache=True)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_entity_types": {
+    "signature": "(self, entity, cls, type=None, start_with=None, count=None, with_vocabulary=False)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_external_data_management_system": {
+    "signature": "(self, permId, only_data=False)",
+    "doc": "Retrieve metadata for the external data management system.\n:param permId: A permId for an external DMS.\n:param only_data: Return the result data as a hash-map, not an object."
+  },
+  "pybis.pybis.Openbis.get_external_data_management_systems": {
+    "signature": "(self, start_with=None, count=None, only_data=False)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_group": {
+    "signature": "(self, code, only_data=False)",
+    "doc": "Get an openBIS AuthorizationGroup. Returns a Group object."
+  },
+  "pybis.pybis.Openbis.get_groups": {
+    "signature": "(self, start_with=None, count=None, **search_args)",
+    "doc": "Get openBIS AuthorizationGroups. Returns a \u00abThings\u00bb\u00a0object.\n\nUsage:\n    groups = e.get.groups()\n    groups[0]             # select first group\n    groups['GROUP_NAME']  # select group with this code\n    for group in groups:\n        ...               # a Group object\n    groups.df             # get a DataFrame object of the group list\n    print(groups)         # print a nice ASCII table (eg. in IPython)\n    groups                # HTML table (in a Jupyter notebook)"
+  },
+  "pybis.pybis.Openbis.get_material_type": {
+    "signature": "(self, type, only_data=False)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_material_types": {
+    "signature": "(self, type=None, start_with=None, count=None)",
+    "doc": "Returns a list of all available material types"
+  },
+  "pybis.pybis.Openbis.get_mountpoint": {
+    "signature": "(self, search_mountpoint=False)",
+    "doc": "Returns the path to the active mountpoint.\nReturns None if no mountpoint is found or if the mountpoint is not mounted anymore.\n\nsearch_mountpoint=True:  Tries to figure out an existing mountpoint for a given hostname\n                         (experimental, does not work under Windows yet)"
+  },
+  "pybis.pybis.Openbis.get_sample": {
+    "signature": "(self, sample_ident, only_data=False, withAttachments=False, props=None, withDataSetIds=False, raw_response=False, **kvals)",
+    "doc": "Retrieve metadata for the sample.\nGet metadata for the sample and any directly connected parents of the sample to allow access\nto the same information visible in the ELN UI. The metadata will be on the file system.\n:param sample_identifiers: A list of sample identifiers to retrieve."
+  },
+  "pybis.pybis.Openbis.get_sample_type": {
+    "signature": "(self, type, only_data=False, with_vocabulary=False, use_cache=True)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_sample_types": {
+    "signature": "(self, type=None, start_with=None, count=None)",
+    "doc": "Returns a list of all available sample types"
+  },
+  "pybis.pybis.Openbis.get_samples": {
+    "signature": "(self, identifier=None, code=None, permId=None, space=None, project=None, experiment=None, collection=None, type=None, start_with=None, count=None, withParents=None, withChildren=None, tags=None, attrs=None, props=None, where=None, raw_response=False, **properties)",
+    "doc": "Returns a DataFrame of all samples for a given space/project/experiment (or any combination).\nThe default result contains only basic attributes, i.e identifier, permId, type, registrator,\nregistrationDate, modifier, modificationDate. Additional attributes may be downloaded by specifying\n'attrs' list.\n\nFilters\n-------\ntype         -- sampleType code or object\nspace        -- space code or object\nproject      -- project code or object\nexperiment   -- experiment code or object (can be a list, too)\ncollection   -- same as above\ntags         -- only return samples with the specified tags\nwhere        -- key-value pairs of property values to search for\nwithParents  -- the list of parent's identifiers in a column 'parents'\nwithChildren -- the list of children's identifiers in a column 'children'\n\nPaging\n------\nstart_with   -- default=None\ncount        -- number of samples that should be fetched. default=None.\n\nInclude in result list\n----------------------\nattrs        -- list of all desired attributes. Examples:\n                space, project, experiment, container: returns identifier\n                parents, children, components: return a list of identifiers\n                space.code, project.code, experiment.code\n                registrator.email, registrator.firstName\n                type.generatedCodePrefix\nprops        -- list of all desired properties. Returns an empty string if\n                a) property is not present\n                b) property is not defined for this sampleType"
+  },
+  "pybis.pybis.Openbis.get_or_create_personal_access_token": {
+    "signature": "(self, sessionName: str, validFrom: datetime.datetime = datetime.datetime(2025, 7, 31, 12, 44, 16, 482689), validTo: datetime.datetime = None, force=False) -> str",
+    "doc": "Creates a new personal access token (PAT).  If a PAT with the given sessionName\nalready exists and its expiry date (validToDate) is not within the warning period,\nthe existing PAT is returned instead.\n\nArgs:\n\n    sessionName (str):    a session name (mandatory)\n    validFrom (datetime): begin of the validity period (default: now)\n    validTo (datetime):   end of the validity period (default: validFrom + maximum validity period, as configured in openBIS)\n    force (bool):         if set to True, a new PAT is created, regardless of existing ones."
+  },
+  "pybis.pybis.Openbis.get_person": {
+    "signature": "(self, userId, only_data=False)",
+    "doc": "Get a person (user)"
+  },
+  "pybis.pybis.Openbis.get_personal_access_token": {
+    "signature": "(self, permId, only_data=False)",
+    "doc": "Get a single Personal Access Token (PAT) by its permId.\nIf you want to get the latest PAT for a given sessionName or create a new one,\nplease use the get_or_create_personal_access_token() method instead.\n\nArgs:\n\n    permId (str)  :  The id of the PAT"
+  },
+  "pybis.pybis.Openbis.get_personal_access_tokens": {
+    "signature": "(self, sessionName=None, start_with=None, count=None, save_to_disk=False, **search_args)",
+    "doc": "Get a list of Personal Access Tokens (PAT).\n\nArgs:\n\n    sessionName (str)  :  a session name\n    save_to_disk (bool):  saves the PATs to the disk, in ~/.pybis"
+  },
+  "pybis.pybis.Openbis.get_persons": {
+    "signature": "(self, start_with=None, count=None, **search_args)",
+    "doc": "Get openBIS users"
+  },
+  "pybis.pybis.Openbis.get_plugin": {
+    "signature": "(self, permId, only_data=False, with_script=True, **kwargs)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_plugins": {
+    "signature": "(self, start_with=None, count=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_project": {
+    "signature": "(self, projectId, only_data=False, use_cache=True)",
+    "doc": "Returns a Project object for a given identifier, code or permId."
+  },
+  "pybis.pybis.Openbis.get_projects": {
+    "signature": "(self, space=None, code=None, start_with=None, count=None)",
+    "doc": "Get a list of all available projects (DataFrame object)."
+  },
+  "pybis.pybis.Openbis.get_property_type": {
+    "signature": "(self, code, only_data=False, start_with=None, count=None, use_cache=True)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_property_types": {
+    "signature": "(self, code=None, start_with=None, count=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_role_assignment": {
+    "signature": "(self, techId, only_data=False)",
+    "doc": "Fetches one assigned role by its techId."
+  },
+  "pybis.pybis.Openbis.get_role_assignments": {
+    "signature": "(self, start_with=None, count=None, **search_args)",
+    "doc": "Get the assigned roles for a given group, person or space"
+  },
+  "pybis.pybis.Openbis.get_semantic_annotation": {
+    "signature": "(self, permId, only_data=False)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_semantic_annotations": {
+    "signature": "(self)",
+    "doc": "Get a list of all available semantic annotations (DataFrame object)."
+  },
+  "pybis.pybis.Openbis.get_server_information": {
+    "signature": "(self)",
+    "doc": "Returns a dict containing the following server information:\napi-version, archiving-configured, authentication-service, enabled-technologies, project-samples-enabled"
+  },
+  "pybis.pybis.Openbis.get_session_info": {
+    "signature": "(self, token=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_space": {
+    "signature": "(self, code, only_data=False, use_cache=True)",
+    "doc": "Returns a Space object for a given identifier."
+  },
+  "pybis.pybis.Openbis.get_spaces": {
+    "signature": "(self, code=None, start_with=None, count=None, use_cache=True)",
+    "doc": "Get a list of all available spaces (DataFrame object). To create a sample or a\ndataset, you need to specify in which space it should live."
+  },
+  "pybis.pybis.Openbis.get_tag": {
+    "signature": "(self, permId, only_data=False, use_cache=True)",
+    "doc": "Returns a specific tag"
+  },
+  "pybis.pybis.Openbis.get_tags": {
+    "signature": "(self, code=None, start_with=None, count=None)",
+    "doc": "Returns a DataFrame of all tags"
+  },
+  "pybis.pybis.Openbis.get_term": {
+    "signature": "(self, code, vocabularyCode, only_data=False)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.get_terms": {
+    "signature": "(self, vocabulary=None, start_with=None, count=None, use_cache=True)",
+    "doc": "Returns information about existing vocabulary terms.\nIf a vocabulary code is provided, it only returns the terms of that vocabulary."
+  },
+  "pybis.pybis.Openbis.get_vocabularies": {
+    "signature": "(self, code=None, start_with=None, count=None)",
+    "doc": "Returns information about vocabulary"
+  },
+  "pybis.pybis.Openbis.get_vocabulary": {
+    "signature": "(self, code, only_data=False, use_cache=True)",
+    "doc": "Returns the details of a given vocabulary (including vocabulary terms)"
+  },
+  "pybis.pybis.Openbis.is_mounted": {
+    "signature": "(self, mountpoint=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.is_session_active": {
+    "signature": "(self)",
+    "doc": "checks whether a session is still active. Returns true or false."
+  },
+  "pybis.pybis.Openbis.is_token_valid": {
+    "signature": "(self, token: str = None)",
+    "doc": "Check if the connection to openBIS is valid.\nThis method is useful to check if a token is still valid or if it has timed out,\nrequiring the user to login again.\n:return: Return True if the token is valid, False if it is not valid."
+  },
+  "pybis.pybis.Openbis.login": {
+    "signature": "(self, username=None, password=None, save_token=False)",
+    "doc": "Log into openBIS.\nExpects a username and a password and updates the token (session-ID).\nThe token is then used for every request.\nClients may want to store the credentials object in a credentials store after successful login.\nThrow a ValueError with the error message if login failed."
+  },
+  "pybis.pybis.Openbis.logout": {
+    "signature": "(self)",
+    "doc": "Log out of openBIS. After logout, the session token is no longer valid."
+  },
+  "pybis.pybis.Openbis.mount": {
+    "signature": "(self, username=None, password=None, hostname=None, mountpoint=None, volname=None, path='/', port=2222, kex_algorithms='+diffie-hellman-group1-sha1')",
+    "doc": "Mounts openBIS dataStore without being root, using sshfs and fuse. Both\nSSHFS and FUSE must be installed on the system (see below)\n\nParams:\nusername -- default: the currently used username\npassword -- default: the currently used password\nhostname -- default: the current hostname\nmountpoint -- default: ~/hostname\n\n\nFUSE / SSHFS Installation (requires root privileges):\n\nMac OS X\n========\nFollow the installation instructions on\nhttps://osxfuse.github.io\n\nUnix Cent OS 7\n==============\n$ sudo yum install epel-release\n$ sudo yum --enablerepo=epel -y install fuse-sshfs\n$ user=\"$(whoami)\"\n$ usermod -a -G fuse \"$user\""
+  },
+  "pybis.pybis.Openbis.new_experiment": {
+    "signature": "(self, type, code, project, props=None, **kwargs)",
+    "doc": "Creates a new experiment of a given experiment type."
+  },
+  "pybis.pybis.Openbis.new_experiment_type": {
+    "signature": "(self, code, description=None, validationPlugin=None)",
+    "doc": "Creates a new experiment type (collection type)"
+  },
+  "pybis.pybis.Openbis.new_content_copy": {
+    "signature": "(self, path, commit_id, repository_id, edms_id, data_set_id)",
+    "doc": "Create a content copy in an existing link data set.\n:param path: path of the new content copy\n\"param commit_id: commit id of the new content copy\n\"param repository_id: repository id of the content copy\n\"param edms_id: Id of the external data managment system of the content copy\n\"param data_set_id: Id of the data set to which the new content copy belongs"
+  },
+  "pybis.pybis.Openbis.new_dataset": {
+    "signature": "(self, type=None, kind='PHYSICAL', files=None, file=None, props=None, folder=None, **kwargs)",
+    "doc": "Creates a new dataset of a given type.\n\ntype         -- sampleType code or object: mandatory\nsample       -- sample code or object\nexperiment   -- experiment code or object\ncollection   -- same as above\nfile         -- path to a single file or a directory\nfiles        -- list of paths to files. Instead of a file, a directory (or many directories)\n                can be provided, the structure is kept intact in openBIS\nzipfile      -- path to a zipfile, which is unzipped in openBIS\nkind         -- if set to CONTAINER, no files should be provided.\n                Instead, the dataset acts as a container for other datasets.\n\nprops        -- a dictionary containing the properties"
+  },
+  "pybis.pybis.Openbis.new_dataset_type": {
+    "signature": "(self, code, description=None, mainDataSetPattern=None, mainDataSetPath=None, disallowDeletion=False, validationPlugin=None)",
+    "doc": "Creates a new dataSet type."
+  },
+  "pybis.pybis.Openbis.new_git_data_set": {
+    "signature": "(self, data_set_type, path, commit_id, repository_id, dms, sample=None, experiment=None, properties={}, dss_code=None, parents=None, data_set_code=None, contents=[])",
+    "doc": "Create a link data set.\n:param data_set_type: The type of the data set\n:param data_set_type: The type of the data set\n:param path: The path to the git repository\n:param commit_id: The git commit id\n:param repository_id: The git repository id - same for copies\n:param dms: An external data managment system object or external_dms_id\n:param sample: A sample object or sample id.\n:param dss_code: Code for the DSS -- defaults to the first dss if none is supplied.\n:param properties: Properties for the data set.\n:param parents: Parents for the data set.\n:param data_set_code: A data set code -- used if provided, otherwise generated on the server\n:param contents: A list of dicts that describe the contents:\n    {'file_length': [file length],\n     'crc32': [crc32 checksum],\n     'directory': [is path a directory?]\n     'path': [the relative path string]}\n:return: A DataSet object"
+  },
+  "pybis.pybis.Openbis.new_group": {
+    "signature": "(self, code, description=None, userIds=None)",
+    "doc": "creates an openBIS group or returns an existing one."
+  },
+  "pybis.pybis.Openbis.new_material_type": {
+    "signature": "(self, code, description=None, validationPlugin=None)",
+    "doc": "Creates a new material type."
+  },
+  "pybis.pybis.Openbis.new_sample": {
+    "signature": "(self, type, project=None, props=None, **kwargs)",
+    "doc": "Creates a new sample of a given sample type.\ntype         -- sampleType code or object: mandatory\ncode         -- name/code for the sample, if not generated automatically\nspace        -- space code or object\nproject      -- project code or object\nexperiment   -- experiment code or object\ncollection   -- same as above\nprops        -- a dictionary containing the properties"
+  },
+  "pybis.pybis.Openbis.new_sample_type": {
+    "signature": "(self, code, generatedCodePrefix, subcodeUnique=False, autoGeneratedCode=False, listable=True, showContainer=False, showParents=True, showParentMetadata=False, validationPlugin=None, description=None)",
+    "doc": "Creates a new sample type."
+  },
+  "pybis.pybis.Openbis.new_person": {
+    "signature": "(self, userId, space=None)",
+    "doc": "creates an openBIS person or returns the existing person"
+  },
+  "pybis.pybis.Openbis.new_plugin": {
+    "signature": "(self, name, pluginType, **kwargs)",
+    "doc": "Creates a new Plugin in openBIS.\nname        -- name of the plugin\ndescription --\npluginType  -- DYNAMIC_PROPERTY, MANAGED_PROPERTY, ENTITY_VALIDATION\nentityKind  -- MATERIAL, EXPERIMENT, SAMPLE, DATA_SET\nscript      -- string of the script itself\navailable   --"
+  },
+  "pybis.pybis.Openbis.new_project": {
+    "signature": "(self, space, code, description=None, **kwargs)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.new_property_type": {
+    "signature": "(self, code, label, description, dataType, managedInternally=False, vocabulary=None, materialType=None, sampleType=None, schema=None, transformation=None, metaData=None)",
+    "doc": "Creates a new property type.\n\ncode               -- name of the property type\nmanagedInternally  -- must be set to True if code starts with a $\nlabel              -- displayed label of that property\ndescription        --\ndataType           -- must contain any of these values:\n                      INTEGER VARCHAR MULTILINE_VARCHAR\n                      REAL TIMESTAMP BOOLEAN HYPERLINK\n                      XML CONTROLLEDVOCABULARY MATERIAL\nvocabulary         -- if dataType is CONTROLLEDVOCABULARY, this attribute\n                      must contain the code of the vocabulary object.\nmaterialType       --\nschema             --\ntransformation     --\nmetaData           -- used to create properties that contain either RichText or tabular, spreadsheet-like data.\n                      use {'custom_widget' : 'Word Processor'} and MULTILINE_VARCHAR for RichText\n                      use {'custom_widget' : 'Spreadhseet'} and XML for tabular data.\nPropertyTypes can be assigned to\n- sampleTypes\n- dataSetTypes\n- experimentTypes\n- materialTypes (deprecated)"
+  },
+  "pybis.pybis.Openbis.new_semantic_annotation": {
+    "signature": "(self, entityType=None, propertyType=None, **kwargs)",
+    "doc": "Note: not functional yet."
+  },
+  "pybis.pybis.Openbis.new_space": {
+    "signature": "(self, **kwargs)",
+    "doc": "Creates a new space in the openBIS instance."
+  },
+  "pybis.pybis.Openbis.new_spreadsheet": {
+    "signature": "(self, columns=10, rows=10)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.new_tag": {
+    "signature": "(self, code, description=None)",
+    "doc": "Creates a new tag (for this user)"
+  },
+  "pybis.pybis.Openbis.new_term": {
+    "signature": "(self, code, vocabularyCode, label=None, description=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.new_transaction": {
+    "signature": "(self, *entities)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.new_vocabulary": {
+    "signature": "(self, code, terms, managedInternally=False, chosenFromList=True, **kwargs)",
+    "doc": "Creates a new vocabulary\nUsage::\n    new_vocabulary(\n        code = 'vocabulary_code',\n        description = '',\n        terms = [\n            { \"code\": \"term1\", \"label\": \"label1\", \"description\": \"description1\" },\n            { \"code\": \"term2\", \"label\": \"label2\", \"description\": \"description2\" },\n        ]\n    )"
+  },
+  "pybis.pybis.Openbis.sample_to_sample_id": {
+    "signature": "(sample)",
+    "doc": "Take sample which may be a string or object and return an identifier for it."
+  },
+  "pybis.pybis.Openbis.save_token_on_behalf": {
+    "signature": "(self, os_home)",
+    "doc": "Set the correct user, only the owner of the token should be able to access it,\nused by jupyterhub authenticator"
+  },
+  "pybis.pybis.Openbis.search_files": {
+    "signature": "(self, data_set_id, dss_code=None)",
+    "doc": ""
+  },
+  "pybis.pybis.Openbis.search_semantic_annotations": {
+    "signature": "(self, permId=None, entityType=None, propertyType=None, only_data=False)",
+    "doc": "Get a list of semantic annotations for permId, entityType, propertyType or\nproperty type assignment (DataFrame object).\n:param permId: permId of the semantic annotation.\n:param entityType: entity (sample) type to search for.\n:param propertyType: property type to search for\n:param only_data: return result as plain data object.\n:return:  Things of DataFrame objects or plain data object"
+  },
+  "pybis.pybis.Openbis.set_token": {
+    "signature": "(self, token, save_token=False)",
+    "doc": "Checks the validity of a token, sets it as the current token and (by default) saves it\nto the disk, i.e. in the ~/.pybis directory"
+  },
+  "pybis.pybis.Openbis.unmount": {
+    "signature": "(self, mountpoint=None)",
+    "doc": "Unmount a given mountpoint or unmount the stored mountpoint.\nIf the umount command does not work, try the pkill command.\nIf still not successful, throw an error message."
+  },
+  "pybis.pybis.PersonalAccessToken.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.pybis.PersonalAccessToken.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.pybis.PersonalAccessToken.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.pybis.PersonalAccessToken.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.pybis.PersonalAccessToken.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.pybis.PersonalAccessToken.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.pybis.PersonalAccessToken._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.PersonalAccessToken._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.pybis.PersonalAccessToken._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.pybis.PersonalAccessToken.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.pybis.PersonalAccessToken.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.PersonalAccessToken.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.PersonalAccessToken.renew": {
+    "signature": "(self, validFrom: datetime.datetime = None, validTo: datetime.datetime = None)",
+    "doc": "Create a new personal access token (PAT) based on an existing one.\nThe same sessionName and validity period will be used, starting from now.\nA new PAT will be created, regardless if there is already an existing\n(and still valid) one.\n\nArgs:\n    validFrom (datetime): begin of the validity period (default:now)\n    validTo (datetime):   end of the validity period (default: validFrom + maximum validity period, as configured in openBIS)"
+  },
+  "pybis.pybis.PersonalAccessToken.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.PersonalAccessToken.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.Plugin.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.pybis.Plugin.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.pybis.Plugin.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.pybis.Plugin.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.pybis.Plugin.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.pybis.Plugin.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.pybis.Plugin._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.Plugin._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.pybis.Plugin._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.pybis.Plugin.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.pybis.Plugin.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.Plugin.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.Plugin.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.Plugin.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.role_assignment.RoleAssignment.__dir__": {
+    "signature": "(self)",
+    "doc": "all the available methods and attributes that should be displayed\nwhen using the autocompletion feature (TAB) in Jupyter"
+  },
+  "pybis.role_assignment.RoleAssignment.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.role_assignment.RoleAssignment.__init__": {
+    "signature": "(self, openbis_obj, data=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.role_assignment.RoleAssignment.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.role_assignment.RoleAssignment.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.role_assignment.RoleAssignment.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.role_assignment.RoleAssignment.__str__": {
+    "signature": "(self)",
+    "doc": "Return str(self)."
+  },
+  "pybis.role_assignment.RoleAssignment._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.role_assignment.RoleAssignment._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.role_assignment.RoleAssignment._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.role_assignment.RoleAssignment.delete": {
+    "signature": "(self, reason='no reason specified')",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.role_assignment.RoleAssignment.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.role_assignment.RoleAssignment.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.role_assignment.RoleAssignment.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.role_assignment.RoleAssignment.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.sample.Sample.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.sample.Sample.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.sample.Sample.__init__": {
+    "signature": "(self, openbis_obj, type, project=None, data=None, props=None, attrs=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.sample.Sample.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.sample.Sample.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.sample.Sample.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.sample.Sample._container": {
+    "signature": "(self, value=None)",
+    "doc": ""
+  },
+  "pybis.sample.Sample._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.sample.Sample._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.sample.Sample._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.sample.Sample.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.sample.Sample.get_datasets": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.sample.Sample.get_projects": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.sample.Sample.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.sample.Sample.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.sample.Sample.save": {
+    "signature": "(self)",
+    "doc": "invoked when code is provided in cases when the type already generates\nthe code automatically. In this case, we need to invoke the old V1 method."
+  },
+  "pybis.sample.Sample.set_properties": {
+    "signature": "(self, properties)",
+    "doc": ""
+  },
+  "pybis.sample.Sample.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.ServerInformation.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.pybis.ServerInformation.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.pybis.ServerInformation.__init__": {
+    "signature": "(self, info)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.pybis.ServerInformation._reformat_info": {
+    "signature": "(self, info)",
+    "doc": ""
+  },
+  "pybis.pybis.ServerInformation._repr_html_": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.ServerInformation.get_major_version": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.ServerInformation.get_minor_version": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.ServerInformation.is_openbis_1605": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.ServerInformation.is_openbis_1806": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.ServerInformation.is_version_greater_than": {
+    "signature": "(self, major: int, minor: int)",
+    "doc": "Checks if server api version is greater than provided"
+  },
+  "pybis.pybis.SessionInformation.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.pybis.SessionInformation.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.pybis.SessionInformation.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.pybis.SessionInformation.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.pybis.SessionInformation.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.pybis.SessionInformation.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.pybis.SessionInformation._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.SessionInformation._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.pybis.SessionInformation._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.pybis.SessionInformation.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.pybis.SessionInformation.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.SessionInformation.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.SessionInformation.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.pybis.SessionInformation.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.space.Space.__dir__": {
+    "signature": "(self)",
+    "doc": "all the available methods and attributes that should be displayed\nwhen using the autocompletion feature (TAB) in Jupyter"
+  },
+  "pybis.space.Space.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.space.Space.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.space.Space.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.space.Space.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.space.Space.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.space.Space.__str__": {
+    "signature": "(self)",
+    "doc": "Return str(self)."
+  },
+  "pybis.space.Space._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.space.Space._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.space.Space._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.space.Space.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.space.Space.get_experiment": {
+    "signature": "(self, experiment_code)",
+    "doc": ""
+  },
+  "pybis.space.Space.get_experiments": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.space.Space.get_sample": {
+    "signature": "(self, sample_code, project_code=None)",
+    "doc": ""
+  },
+  "pybis.space.Space.get_samples": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.space.Space.get_project": {
+    "signature": "(self, project_code)",
+    "doc": ""
+  },
+  "pybis.space.Space.get_projects": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.space.Space.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.space.Space.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.space.Space.new_project": {
+    "signature": "(self, code, description=None, **kwargs)",
+    "doc": ""
+  },
+  "pybis.space.Space.new_sample": {
+    "signature": "(self, **kwargs)",
+    "doc": ""
+  },
+  "pybis.space.Space.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.space.Space.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.tag.Tag.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.tag.Tag.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.tag.Tag.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.tag.Tag.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.tag.Tag._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.tag.Tag._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.tag.Tag._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.delete": {
+    "signature": "(self, reason, permanently=False)",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.tag.Tag.get_experiments": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.get_materials": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.get_owner": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.get_samples": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.tag.Tag.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.Vocabulary.__init__old_": {
+    "signature": "(self, openbis_obj, data=None, terms=None, **kwargs)",
+    "doc": ""
+  },
+  "pybis.vocabulary.Vocabulary.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.vocabulary.Vocabulary.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.vocabulary.Vocabulary.__init__": {
+    "signature": "(self, openbis_obj, type=None, data=None, props=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.vocabulary.Vocabulary.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.vocabulary.Vocabulary.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.vocabulary.Vocabulary.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.vocabulary.Vocabulary._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.Vocabulary._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.vocabulary.Vocabulary._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.vocabulary.Vocabulary.add_term": {
+    "signature": "(self, code, label=None, description=None)",
+    "doc": "Adds a term to this Vocabulary.\nIf Vocabulary is already persistent, it is added by adding a new VocabularyTerm object.\nIf Vocabulary is new, the term is added to the list of terms"
+  },
+  "pybis.vocabulary.Vocabulary.delete": {
+    "signature": "(self, reason)",
+    "doc": "Delete this vocabulary"
+  },
+  "pybis.vocabulary.Vocabulary.get_terms": {
+    "signature": "(self)",
+    "doc": "Returns the VocabularyTerms of the given Vocabulary."
+  },
+  "pybis.vocabulary.Vocabulary.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.Vocabulary.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.Vocabulary.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.Vocabulary.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.VocabularyTerm.__dir__": {
+    "signature": "(self)",
+    "doc": "Default dir() implementation."
+  },
+  "pybis.vocabulary.VocabularyTerm.__getattr__": {
+    "signature": "(self, name)",
+    "doc": ""
+  },
+  "pybis.vocabulary.VocabularyTerm.__init__": {
+    "signature": "(self, openbis_obj, data=None, **kwargs)",
+    "doc": "Initialize self.  See help(type(self)) for accurate signature."
+  },
+  "pybis.vocabulary.VocabularyTerm.__init_subclass__": {
+    "signature": "(entity=None, single_item_method_name=None)",
+    "doc": "create a specialized parent class.\nThe class that inherits from OpenBisObject does not need\nto implement its own __init__ method in order to provide the\nentity name. Instead, it can pass the entity name as a param:\nclass XYZ(OpenBisObject, entity=\"myEntity\")"
+  },
+  "pybis.vocabulary.VocabularyTerm.__repr__": {
+    "signature": "(self)",
+    "doc": "same thing as _repr_html_() but for IPython"
+  },
+  "pybis.vocabulary.VocabularyTerm.__setattr__": {
+    "signature": "(self, name, value)",
+    "doc": "Implement setattr(self, name, value)."
+  },
+  "pybis.vocabulary.VocabularyTerm._get_single_item_method": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.VocabularyTerm._new_attrs": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.VocabularyTerm._repr_html_": {
+    "signature": "(self)",
+    "doc": "Print all the assigned attributes (identifier, tags, etc.) in a nicely formatted table. See\nAttributeHolder class."
+  },
+  "pybis.vocabulary.VocabularyTerm._set_data": {
+    "signature": "(self, data)",
+    "doc": ""
+  },
+  "pybis.vocabulary.VocabularyTerm._up_attrs": {
+    "signature": "(self)",
+    "doc": "AttributeTerms behave quite differently to all other openBIS entities,\nthat's why we need to override this method"
+  },
+  "pybis.vocabulary.VocabularyTerm.delete": {
+    "signature": "(self, reason='no particular reason')",
+    "doc": "Delete this openbis entity.\nA reason is mandatory to delete any entity."
+  },
+  "pybis.vocabulary.VocabularyTerm.is_marked_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.VocabularyTerm.mark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.VocabularyTerm.move_after_term": {
+    "signature": "(self, term)",
+    "doc": "Moves the term just after the term given. This will result in an ordinal change."
+  },
+  "pybis.vocabulary.VocabularyTerm.move_to_top": {
+    "signature": "(self)",
+    "doc": "Moves the term on the top of the vocabularyTerm list,\ni.e. the ordinal will change"
+  },
+  "pybis.vocabulary.VocabularyTerm.save": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.VocabularyTerm.unmark_to_be_deleted": {
+    "signature": "(self)",
+    "doc": ""
+  },
+  "pybis.vocabulary.VocabularyTerm.vocabularyTermId": {
+    "signature": "(self)",
+    "doc": "needed for updating a term."
+  },
+  "pybis.spreadsheet._get_headers": {
+    "signature": "(count)",
+    "doc": "Algorithm for generating headers, maximum number of columns supported: 26*26=676"
+  },
+  "pybis.spreadsheet._nonzero": {
+    "signature": "(num)",
+    "doc": ""
+  },
+  "pybis.utils.extract": {
+    "signature": "(obj, property_name)",
+    "doc": ""
+  },
+  "pybis.utils.extract_person_details": {
+    "signature": "(person)",
+    "doc": ""
+  },
+  "pybis.utils.extract_property_assignments": {
+    "signature": "(pas)",
+    "doc": ""
+  },
+  "pybis.utils.extract_role_assignments": {
+    "signature": "(ras)",
+    "doc": ""
+  },
+  "pybis.utils.extract_username_from_token": {
+    "signature": "(token: str) -> str",
+    "doc": ""
+  }
+}
