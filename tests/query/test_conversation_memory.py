@@ -12,7 +12,7 @@ from pathlib import Path
 # Add the src directory to the Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 
-from openbis_chatbot.query.conversation_engine import ConversationEngine
+from chatBIS.query.conversation_engine import ConversationEngine
 
 # Configure logging
 logging.basicConfig(

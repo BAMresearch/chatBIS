@@ -1,5 +1,5 @@
 """
-Main entry point for the openBIS Chatbot package.
+Main entry point for the chatBIS package.
 """
 
 import argparse
@@ -7,11 +7,11 @@ import os
 import sys
 import logging
 
-from openbis_chatbot.scraper.cli import main as scraper_main
-from openbis_chatbot.processor.cli import main as processor_main
-from openbis_chatbot.query.cli import main as query_main
-from openbis_chatbot.web.cli import main as web_main
-from openbis_chatbot.utils.logging import setup_logging
+from chatBIS.scraper.cli import main as scraper_main
+from chatBIS.processor.cli import main as processor_main
+from chatBIS.query.cli import main as query_main
+from chatBIS.web.cli import main as web_main
+from chatBIS.utils.logging import setup_logging
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -37,8 +37,8 @@ def run_full_pipeline():
     try:
         # Run scraper
         logger.info(f"Scraping data from {DEFAULT_OPENBIS_URL}...")
-        from openbis_chatbot.scraper.cli import parse_args as scraper_parse_args
-        from openbis_chatbot.scraper.cli import run_with_args as scraper_run
+        from chatBIS.scraper.cli import parse_args as scraper_parse_args
+        from chatBIS.scraper.cli import run_with_args as scraper_run
 
         scraper_args = scraper_parse_args([
             "--url", DEFAULT_OPENBIS_URL,
@@ -53,8 +53,8 @@ def run_full_pipeline():
 
         # Run processor
         logger.info(f"Processing data from {DEFAULT_RAW_DIR}...")
-        from openbis_chatbot.processor.cli import parse_args as processor_parse_args
-        from openbis_chatbot.processor.cli import run_with_args as processor_run
+        from chatBIS.processor.cli import parse_args as processor_parse_args
+        from chatBIS.processor.cli import run_with_args as processor_run
 
         processor_args = processor_parse_args([
             "--input", DEFAULT_RAW_DIR,
@@ -68,8 +68,8 @@ def run_full_pipeline():
 
         # Run query
         logger.info(f"Starting chatbot with data from {DEFAULT_PROCESSED_DIR}...")
-        from openbis_chatbot.query.cli import parse_args as query_parse_args
-        from openbis_chatbot.query.cli import run_with_args as query_run
+        from chatBIS.query.cli import parse_args as query_parse_args
+        from chatBIS.query.cli import run_with_args as query_run
 
         query_args = query_parse_args([
             "--data", DEFAULT_PROCESSED_DIR
@@ -96,10 +96,10 @@ def run_web_interface():
         original_argv = sys.argv.copy()
 
         # Temporarily modify sys.argv for the web module
-        sys.argv = ["openbis-chatbot"]
+        sys.argv = ["chatbis"]
 
         # Import and use the parse_args function from web.cli
-        from openbis_chatbot.web.cli import parse_args
+        from chatBIS.web.cli import parse_args
         args = parse_args([
             "--data", DEFAULT_PROCESSED_DIR,
             "--host", "127.0.0.1",
@@ -110,7 +110,7 @@ def run_web_interface():
         sys.argv = original_argv
 
         # Call web_main with the parsed args
-        from openbis_chatbot.web.cli import run_with_args
+        from chatBIS.web.cli import run_with_args
         return run_with_args(args)
     else:
         logger.info("No processed data found. Running full pipeline first...")
@@ -132,10 +132,10 @@ def auto_mode():
         original_argv = sys.argv.copy()
 
         # Temporarily modify sys.argv for the query module
-        sys.argv = ["openbis-chatbot"]
+        sys.argv = ["chatbis"]
 
         # Import and use the parse_args function from query.cli
-        from openbis_chatbot.query.cli import parse_args
+        from chatBIS.query.cli import parse_args
         args = parse_args([
             "--data", DEFAULT_PROCESSED_DIR
         ])
@@ -144,7 +144,7 @@ def auto_mode():
         sys.argv = original_argv
 
         # Call query_main with the parsed args
-        from openbis_chatbot.query.cli import run_with_args
+        from chatBIS.query.cli import run_with_args
         return run_with_args(args)
     else:
         logger.info("No processed data found. Running full pipeline...")
@@ -157,8 +157,8 @@ def main():
         return auto_mode()
 
     parser = argparse.ArgumentParser(
-        description="openBIS Chatbot - A RAG-based chatbot for the openBIS documentation.",
-        prog="openbis-chatbot"
+        description="chatBIS - A RAG-based chatbot for the openBIS documentation.",
+        prog="chatbis"
     )
 
     # Add --web flag to run the web interface

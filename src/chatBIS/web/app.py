@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Flask web application for the openBIS Chatbot.
+Flask web application for chatBIS.
 """
 
 import os
@@ -8,8 +8,8 @@ import logging
 from pathlib import Path
 from flask import Flask, render_template, request, jsonify, session
 
-from openbis_chatbot.query.query import RAGQueryEngine
-from openbis_chatbot.query.conversation_engine import ConversationEngine
+from chatBIS.query.query import RAGQueryEngine
+from chatBIS.query.conversation_engine import ConversationEngine
 
 from flask_cors import CORS
 

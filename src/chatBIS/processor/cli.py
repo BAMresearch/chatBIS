@@ -8,7 +8,7 @@ import logging
 import sys
 from dotenv import load_dotenv
 
-from openbis_chatbot.processor.processor import RAGProcessor
+from chatBIS.processor.processor import RAGProcessor
 
 # Configure logging
 logging.basicConfig(

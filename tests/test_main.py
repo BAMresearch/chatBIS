@@ -4,7 +4,7 @@ Unit tests for the main module.
 
 from unittest.mock import patch, MagicMock
 
-from openbis_chatbot.__main__ import main
+from chatBIS.__main__ import main
 
 
 class TestMain:
@@ -12,11 +12,11 @@ class TestMain:
 
     def test_main_no_command(self):
         """Test the main function with no command."""
-        with patch("openbis_chatbot.__main__.auto_mode") as mock_auto_mode:
+        with patch("chatBIS.__main__.auto_mode") as mock_auto_mode:
             # Mock the auto_mode function to return 0
             mock_auto_mode.return_value = 0
 
-            with patch("sys.argv", ["openbis-chatbot"]):
+            with patch("sys.argv", ["chatbis"]):
                 # Call the main function
                 result = main()
 

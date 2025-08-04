@@ -6,16 +6,16 @@ import pytest
 import sys
 from unittest.mock import patch, MagicMock, call
 
-from src.openbis_chatbot.query.cli import main
+from src.chatBIS.query.cli import main
 
 
 class TestQueryCLI:
     """Tests for the query CLI."""
 
-    @patch("src.openbis_chatbot.query.cli.RAGQueryEngine")
+    @patch("src.chatBIS.query.cli.RAGQueryEngine")
     @patch("builtins.input")
     @patch("builtins.print")
-    @patch("sys.argv", ["openbis-chatbot", "--data", "./data", "--verbose"])
+    @patch("sys.argv", ["chatbis", "--data", "./data", "--verbose"])
     def test_main_success(self, mock_print, mock_input, mock_engine_class):
         """Test the main function with valid arguments."""
         # Mock the query engine instance
@@ -85,10 +85,10 @@ class TestQueryCLI:
         # Check that the function returned 0 (success)
         assert result == 0
 
-    @patch("src.openbis_chatbot.query.cli.RAGQueryEngine")
+    @patch("src.chatBIS.query.cli.RAGQueryEngine")
     @patch("builtins.input")
     @patch("builtins.print")
-    @patch("sys.argv", ["openbis-chatbot", "--data", "./data"])
+    @patch("sys.argv", ["chatbis", "--data", "./data"])
     def test_main_with_empty_query(self, mock_print, mock_input, mock_engine_class):
         """Test the main function with an empty query."""
         # Mock the query engine instance

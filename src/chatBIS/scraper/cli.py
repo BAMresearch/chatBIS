@@ -7,7 +7,7 @@ import argparse
 import logging
 import sys
 
-from openbis_chatbot.scraper.scraper import ReadTheDocsScraper
+from chatBIS.scraper.scraper import ReadTheDocsScraper
 
 # Configure logging
 logging.basicConfig(

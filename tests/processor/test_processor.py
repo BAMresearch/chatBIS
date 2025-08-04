@@ -7,7 +7,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock, mock_open
 
-from src.openbis_chatbot.processor.processor import RAGProcessor, ContentChunker, EmbeddingGenerator
+from src.chatBIS.processor.processor import RAGProcessor, ContentChunker, EmbeddingGenerator
 
 
 class TestRAGProcessor:

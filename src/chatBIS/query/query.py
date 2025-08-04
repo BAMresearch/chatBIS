@@ -109,12 +109,12 @@ class RAGQueryEngine:
         # If Ollama is not available or there was an error, use a dummy embedding
         return self._generate_dummy_embedding()
 
-    def _generate_dummy_embedding(self, dim: int = 1536) -> List[float]:
+    def _generate_dummy_embedding(self, dim: int = 768) -> List[float]:
         """
         Generate a dummy embedding (random vector).
 
         Args:
-            dim: The dimension of the embedding
+            dim: The dimension of the embedding (default 768 to match stored embeddings)
 
         Returns:
             A random vector of the specified dimension
