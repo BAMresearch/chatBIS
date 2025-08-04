@@ -4,7 +4,7 @@ Test script to test the chatbot with a specific query.
 """
 
 import json
-from openbis_chatbot.query.query import RAGQueryEngine
+from chatBIS.query.query import RAGQueryEngine
 
 def main():
     # Initialize the query engine

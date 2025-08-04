@@ -10,7 +10,7 @@ import os
 import re
 from dotenv import load_dotenv
 
-from openbis_chatbot.query.conversation_engine import ConversationEngine
+from chatBIS.query.conversation_engine import ConversationEngine
 
 # Configure logging
 logging.basicConfig(

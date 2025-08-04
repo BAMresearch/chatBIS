@@ -8,15 +8,15 @@ import numpy as np
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
-from src.openbis_chatbot.query.query import RAGQueryEngine
+from src.chatBIS.query.query import RAGQueryEngine
 
 
 class TestRAGQueryEngine:
     """Tests for the RAGQueryEngine class."""
 
-    @patch("src.openbis_chatbot.query.query.OLLAMA_AVAILABLE", True)
-    @patch("src.openbis_chatbot.query.query.OllamaEmbeddings")
-    @patch("src.openbis_chatbot.query.query.ChatOllama")
+    @patch("src.chatBIS.query.query.OLLAMA_AVAILABLE", True)
+    @patch("src.chatBIS.query.query.OllamaEmbeddings")
+    @patch("src.chatBIS.query.query.ChatOllama")
     def test_init_with_ollama(self, mock_chat_ollama, mock_ollama_embeddings):
         """Test initialization with Ollama available."""
         # Mock the OllamaEmbeddings and ChatOllama classes
@@ -63,7 +63,7 @@ class TestRAGQueryEngine:
             assert engine.chunks[0]["url"] == "https://example.com"
             assert engine.chunks[0]["chunk_id"] == "test_0"
 
-    @patch("src.openbis_chatbot.query.query.OLLAMA_AVAILABLE", False)
+    @patch("src.chatBIS.query.query.OLLAMA_AVAILABLE", False)
     def test_init_without_ollama(self):
         """Test initialization without Ollama available."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -134,7 +134,7 @@ class TestRAGQueryEngine:
                     api_key="test_key"
                 )
 
-    @patch("src.openbis_chatbot.query.query.OLLAMA_AVAILABLE", True)
+    @patch("src.chatBIS.query.query.OLLAMA_AVAILABLE", True)
     def test_generate_embedding_with_ollama(self):
         """Test generating an embedding with Ollama."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -170,7 +170,7 @@ class TestRAGQueryEngine:
         assert len(embedding) == 768
         assert embedding == [0.1] * 768
 
-    @patch("src.openbis_chatbot.query.query.OLLAMA_AVAILABLE", True)
+    @patch("src.chatBIS.query.query.OLLAMA_AVAILABLE", True)
     def test_generate_embedding_with_ollama_error(self):
         """Test generating an embedding with Ollama when an error occurs."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -212,7 +212,7 @@ class TestRAGQueryEngine:
         assert len(embedding) == 1536
         assert embedding == [0.2] * 1536
 
-    @patch("src.openbis_chatbot.query.query.OLLAMA_AVAILABLE", False)
+    @patch("src.chatBIS.query.query.OLLAMA_AVAILABLE", False)
     def test_generate_embedding_without_ollama(self):
         """Test generating an embedding without Ollama."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -320,7 +320,7 @@ class TestRAGQueryEngine:
         # The chunk with embedding [0.2] * 768 should be most similar to the query embedding [0.2] * 768
         assert chunks[0]["chunk_id"] == "test_2"
 
-    @patch("src.openbis_chatbot.query.query.OLLAMA_AVAILABLE", True)
+    @patch("src.chatBIS.query.query.OLLAMA_AVAILABLE", True)
     def test_generate_answer_with_ollama(self):
         """Test generating an answer with Ollama."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -369,7 +369,7 @@ class TestRAGQueryEngine:
         # Check that the answer is correct
         assert answer == "Test answer"
 
-    @patch("src.openbis_chatbot.query.query.OLLAMA_AVAILABLE", True)
+    @patch("src.chatBIS.query.query.OLLAMA_AVAILABLE", True)
     def test_generate_answer_with_ollama_error(self):
         """Test generating an answer with Ollama when an error occurs."""
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -415,7 +415,7 @@ class TestRAGQueryEngine:
         assert "Error generating answer" in answer
         assert "Test error" in answer
 
-    @patch("src.openbis_chatbot.query.query.OLLAMA_AVAILABLE", False)
+    @patch("src.chatBIS.query.query.OLLAMA_AVAILABLE", False)
     def test_generate_answer_without_ollama(self):
         """Test generating an answer without Ollama."""
         with tempfile.TemporaryDirectory() as temp_dir:

@@ -1,5 +1,5 @@
 """
-Tools module for openBIS chatbot.
+Tools module for chatBIS.
 
 This module contains tool implementations for function calling capabilities,
 including pybis integration and other utility tools.

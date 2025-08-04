@@ -1,5 +1,5 @@
 """
-Web interface for the openBIS Chatbot.
+Web interface for chatBIS.
 """
 
-from openbis_chatbot.web.app import run_app
+from chatBIS.web.app import run_app

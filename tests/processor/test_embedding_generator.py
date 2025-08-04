@@ -5,7 +5,7 @@ Unit tests for the EmbeddingGenerator class.
 import numpy as np
 from unittest.mock import patch, MagicMock
 
-from src.openbis_chatbot.processor.processor import EmbeddingGenerator
+from src.chatBIS.processor.processor import EmbeddingGenerator
 
 
 class TestEmbeddingGenerator:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Command-line interface for the openBIS Chatbot web interface.
+Command-line interface for the chatBIS web interface.
 """
 
 import argparse
@@ -8,7 +8,7 @@ import logging
 import sys
 import os
 
-from openbis_chatbot.web.app import run_app
+from chatBIS.web.app import run_app
 
 # Configure logging
 logging.basicConfig(
