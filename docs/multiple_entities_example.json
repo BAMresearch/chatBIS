@@ -1,0 +1,43 @@
+{
+  "actions": [
+    {
+      "action": "CREATE",
+      "entity": "EXPERIMENT",
+      "location": {
+        "project": "/MY_LAB/PROJECT_ALPHA"
+      },
+      "payload": {
+        "code": "CELL_CULTURE_RUN_03",
+        "type": "GENERAL_EXPERIMENT"
+      }
+    },
+    {
+      "action": "CREATE",
+      "entity": "OBJECT",
+      "location": {
+        "experiment": "/MY_LAB/PROJECT_ALPHA/CELL_CULTURE_RUN_03"
+      },
+      "payload": {
+        "code": "CULTURE_A1",
+        "type": "CELL_CULTURE",
+        "properties": {
+          "well_position": "A1"
+        }
+      }
+    },
+    {
+      "action": "CREATE",
+      "entity": "OBJECT",
+      "location": {
+        "experiment": "/MY_LAB/PROJECT_ALPHA/CELL_CULTURE_RUN_03"
+      },
+      "payload": {
+        "code": "CULTURE_A2",
+        "type": "CELL_CULTURE",
+        "properties": {
+          "well_position": "A2"
+        }
+      }
+    }
+  ]
+}
