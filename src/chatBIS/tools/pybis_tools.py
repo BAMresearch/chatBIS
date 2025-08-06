@@ -1430,52 +1430,48 @@ class PyBISToolManager:
                     dataset_type_str = dataset.type
 
                 # Get what the dataset is attached to (clean format)
+                # Use internal attributes to avoid lazy loading that causes hangs
                 attached_to = ""
-                if hasattr(dataset, 'sample') and dataset.sample:
-                    # Extract clean sample name/ID
-                    sample_ref = str(dataset.sample)
-                    if hasattr(dataset.sample, 'identifier'):
-                        sample_name = dataset.sample.identifier.split('/')[-1]  # Get just the name part
-                        attached_to = f" → Sample: {sample_name}"
-                    elif hasattr(dataset.sample, 'code'):
-                        attached_to = f" → Sample: {dataset.sample.code}"
-                    else:
-                        # Fallback: extract name from string representation
-                        if '/' in sample_ref:
-                            sample_name = sample_ref.split('/')[-1]
+                try:
+                    # Check internal attributes first to avoid lazy loading
+                    if hasattr(dataset, '_sample') and dataset._sample:
+                        # Use the internal sample reference to avoid API call
+                        sample_identifier = dataset._sample.get('identifier', '')
+                        if sample_identifier:
+                            sample_name = sample_identifier.split('/')[-1]  # Get just the name part
                             attached_to = f" → Sample: {sample_name}"
-                        else:
-                            attached_to = f" → Sample: {sample_ref}"
-                elif hasattr(dataset, 'experiment') and dataset.experiment:
-                    # Extract clean experiment name/ID
-                    exp_ref = str(dataset.experiment)
-                    if hasattr(dataset.experiment, 'identifier'):
-                        exp_name = dataset.experiment.identifier.split('/')[-1]  # Get just the name part
-                        attached_to = f" → Experiment: {exp_name}"
-                    elif hasattr(dataset.experiment, 'code'):
-                        attached_to = f" → Experiment: {dataset.experiment.code}"
-                    else:
-                        # Fallback: extract name from string representation
-                        if '/' in exp_ref:
-                            exp_name = exp_ref.split('/')[-1]
+                    elif hasattr(dataset, '_experiment') and dataset._experiment:
+                        # Use the internal experiment reference to avoid API call
+                        exp_identifier = dataset._experiment.get('identifier', '')
+                        if exp_identifier:
+                            exp_name = exp_identifier.split('/')[-1]  # Get just the name part
                             attached_to = f" → Experiment: {exp_name}"
-                        else:
-                            attached_to = f" → Experiment: {exp_ref}"
-                elif hasattr(dataset, 'project') and dataset.project:
-                    # Extract clean project name/ID
-                    proj_ref = str(dataset.project)
-                    if hasattr(dataset.project, 'identifier'):
-                        proj_name = dataset.project.identifier.split('/')[-1]  # Get just the name part
-                        attached_to = f" → Project: {proj_name}"
-                    elif hasattr(dataset.project, 'code'):
-                        attached_to = f" → Project: {dataset.project.code}"
-                    else:
-                        # Fallback: extract name from string representation
-                        if '/' in proj_ref:
-                            proj_name = proj_ref.split('/')[-1]
+                    elif hasattr(dataset, '_project') and dataset._project:
+                        # Use the internal project reference to avoid API call
+                        proj_identifier = dataset._project.get('identifier', '')
+                        if proj_identifier:
+                            proj_name = proj_identifier.split('/')[-1]  # Get just the name part
                             attached_to = f" → Project: {proj_name}"
-                        else:
-                            attached_to = f" → Project: {proj_ref}"
+
+                    # Fallback: try to get attachment info from dataset attributes without lazy loading
+                    if not attached_to:
+                        # Check if dataset has any reference attributes we can use
+                        if hasattr(dataset, 'attrs') and hasattr(dataset.attrs, 'all'):
+                            attrs = dataset.attrs.all()
+                            if 'sample' in attrs and attrs['sample']:
+                                sample_id = str(attrs['sample']).split('/')[-1]
+                                attached_to = f" → Sample: {sample_id}"
+                            elif 'experiment' in attrs and attrs['experiment']:
+                                exp_id = str(attrs['experiment']).split('/')[-1]
+                                attached_to = f" → Experiment: {exp_id}"
+                            elif 'project' in attrs and attrs['project']:
+                                proj_id = str(attrs['project']).split('/')[-1]
+                                attached_to = f" → Project: {proj_id}"
+
+                except Exception as e:
+                    # If anything fails, just don't show attachment info
+                    logger.debug(f"Could not get dataset attachment info: {e}")
+                    attached_to = ""
 
                 result += f"{idx+1}. {identifier} ({dataset_type_str}){attached_to}\n"
 

@@ -41,7 +41,7 @@ query_engine = None
 conversation_engine = None
 
 
-def initialize_engines(data_dir=DEFAULT_DATA_DIR, model="qwen3"):
+def initialize_engines(data_dir=DEFAULT_DATA_DIR, model="gpt-oss:20b"):
     """Initialize both the query engine and conversation engine."""
     global query_engine, conversation_engine
     try:
@@ -169,7 +169,7 @@ def clear_chat_history(session_id):
         })
 
 
-def run_app(host='0.0.0.0', port=5000, debug=False, data_dir=DEFAULT_DATA_DIR, model="qwen3"):
+def run_app(host='0.0.0.0', port=5000, debug=False, data_dir=DEFAULT_DATA_DIR, model="gpt-oss:20b"):
     """Run the Flask application."""
     # Initialize the engines
     initialize_engines(data_dir, model)

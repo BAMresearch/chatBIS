@@ -42,7 +42,7 @@ except ImportError:
 class RAGQueryEngine:
     """Class for querying processed content using RAG."""
 
-    def __init__(self, data_dir: str, api_key: Optional[str] = None, model: str = "qwen3"):
+    def __init__(self, data_dir: str, api_key: Optional[str] = None, model: str = "gpt-oss:20b"):
         """
         Initialize the RAG query engine.
 
