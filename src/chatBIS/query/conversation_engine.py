@@ -20,6 +20,8 @@ from langgraph.checkpoint.sqlite import SqliteSaver
 
 from .query import RAGQueryEngine
 from ..tools import PyBISToolManager
+from ..tools.entity_structurer import EntityStructurer
+from ..tools.pybis_adapter import PybisAdapter
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -42,10 +44,15 @@ class ConversationState(TypedDict):
     session_id: str
     token_count: int
     # Multi-agent routing fields
-    decision: str  # "rag", "function_call", "conversation"
+    decision: str  # "rag", "function_call", "structured_interaction", "conversation"
     tool_action: Optional[Dict]  # Tool to execute and parameters
     tool_output: Optional[str]  # Result from tool execution
     final_response: str  # Final formatted response
+    # Structured interaction fields
+    action_request: Optional[Dict]  # Structured ActionRequest JSON
+    confirmation_summary: Optional[str]  # Human-readable summary for confirmation
+    user_confirmation: Optional[str]  # User's confirmation response
+    execution_results: Optional[List[Dict]]  # Results from PybisAdapter execution
 
 
 class ConversationEngine:
@@ -69,6 +76,10 @@ class ConversationEngine:
 
         # Initialize tool manager
         self.tool_manager = PyBISToolManager()
+
+        # Initialize structured interaction components
+        self.entity_structurer = EntityStructurer(model=model)
+        self.pybis_adapter = PybisAdapter() if OLLAMA_AVAILABLE else None
 
         # Initialize LLM
         if OLLAMA_AVAILABLE:
@@ -273,7 +284,59 @@ Remember: You are chatBIS, the openBIS assistant, here to help ONLY with openBIS
                     'i need to know',  # "i need to know how"
                 ]
 
-                # Check for connection keywords (highest priority for function calls)
+                # Check for RAG patterns first (highest priority - documentation questions)
+                rag_patterns = [
+                    'how to', 'how can i', 'how do i',
+                    'what is', 'what are',
+                    'can you explain', 'tell me about', 'explain how', 'show me how',
+                    'help me', 'i want to know', 'i need to know'
+                ]
+
+                has_rag_patterns = any(pattern in user_query for pattern in rag_patterns)
+                if has_rag_patterns:
+                    state["decision"] = "rag"
+                    logger.info(f"Router decision: rag (documentation pattern) for query: {state['user_query']}")
+                    return state
+
+                # Check for structured interaction patterns (high priority for CREATE/UPDATE/DELETE operations)
+                structured_interaction_patterns = [
+                    # Creation patterns
+                    'create a', 'create new', 'make a', 'make new', 'add a', 'add new',
+                    'register a', 'register new', 'set up a', 'set up new',
+
+                    # Update patterns
+                    'update the', 'modify the', 'change the', 'edit the',
+                    'update my', 'modify my', 'change my', 'edit my',
+
+                    # Deletion patterns
+                    'delete the', 'remove the', 'drop the',
+                    'delete my', 'remove my', 'drop my',
+
+                    # Complex operations
+                    'create and', 'make and', 'add and',
+                    'with parent', 'with child', 'with relationship',
+                    'upload file', 'upload data', 'attach file'
+                ]
+
+                # Check for structured interaction keywords
+                has_structured_patterns = any(pattern in user_query for pattern in structured_interaction_patterns)
+
+                # Also check for entity creation/modification with specific entities
+                entity_creation_patterns = [
+                    'create space', 'create project', 'create experiment', 'create sample', 'create object', 'create dataset',
+                    'new space', 'new project', 'new experiment', 'new sample', 'new object', 'new dataset',
+                    'make space', 'make project', 'make experiment', 'make sample', 'make object', 'make dataset',
+                    'add space', 'add project', 'add experiment', 'add sample', 'add object', 'add dataset'
+                ]
+
+                has_entity_creation = any(pattern in user_query for pattern in entity_creation_patterns)
+
+                if has_structured_patterns or has_entity_creation:
+                    state["decision"] = "structured_interaction"
+                    logger.info(f"Router decision: structured_interaction for query: {state['user_query']}")
+                    return state
+
+                # Check for connection keywords (high priority for function calls)
                 if any(keyword in user_query for keyword in connection_keywords):
                     state["decision"] = "function_call"
                     logger.info(f"Router decision: function_call (connection keyword) for query: {state['user_query']}")
@@ -290,12 +353,7 @@ Remember: You are chatBIS, the openBIS assistant, here to help ONLY with openBIS
                     logger.info(f"Router decision: function_call (property/date pattern) for query: {state['user_query']}")
                     return state
 
-                # Check for RAG patterns (second highest priority - documentation questions)
-                has_rag_patterns = any(pattern in user_query for pattern in rag_patterns)
-                if has_rag_patterns:
-                    state["decision"] = "rag"
-                    logger.info(f"Router decision: rag (documentation pattern) for query: {state['user_query']}")
-                    return state
+
 
                 # Check for function patterns (third priority)
                 has_function_patterns = any(pattern in user_query for pattern in function_patterns)
@@ -530,6 +588,149 @@ REASON: explanation why no tool is suitable"""
 
             return state
 
+        # Structured Interaction Workflow Nodes
+        def structure_request(state: ConversationState) -> ConversationState:
+            """Convert natural language to ActionRequest JSON."""
+            try:
+                # Get conversation history for context
+                conversation_history = []
+                if state.get("messages"):
+                    for msg in state["messages"][-6:]:  # Last 3 exchanges
+                        if isinstance(msg, HumanMessage):
+                            conversation_history.append({"role": "user", "content": msg.content})
+                        elif isinstance(msg, AIMessage):
+                            conversation_history.append({"role": "assistant", "content": msg.content})
+
+                # Structure the request
+                action_request = self.entity_structurer.structure_user_request(
+                    state["user_query"],
+                    conversation_history
+                )
+
+                state["action_request"] = action_request
+                logger.info(f"Structured request with {len(action_request.get('actions', []))} actions")
+                return state
+
+            except Exception as e:
+                logger.error(f"Error in structure_request: {e}")
+                state["response"] = f"I encountered an error while processing your request: {str(e)}"
+                return state
+
+        def present_for_confirmation(state: ConversationState) -> ConversationState:
+            """Present the structured request for user confirmation."""
+            try:
+                if not state.get("action_request"):
+                    state["response"] = "No structured request available for confirmation."
+                    return state
+
+                # Generate confirmation summary
+                confirmation_summary = self.entity_structurer.format_confirmation_summary(
+                    state["action_request"]
+                )
+
+                state["confirmation_summary"] = confirmation_summary
+                state["response"] = confirmation_summary
+                logger.info("Presented confirmation summary to user")
+                return state
+
+            except Exception as e:
+                logger.error(f"Error in present_for_confirmation: {e}")
+                state["response"] = f"Error generating confirmation summary: {str(e)}"
+                return state
+
+        def execute_interaction(state: ConversationState) -> ConversationState:
+            """Execute the structured interaction using PybisAdapter."""
+            try:
+                if not state.get("action_request"):
+                    state["response"] = "No action request available for execution."
+                    return state
+
+                if not self.pybis_adapter:
+                    state["response"] = "PybisAdapter not available. Cannot execute structured interactions."
+                    return state
+
+                # Get pybis connection from tool manager
+                if not self.tool_manager.is_connected():
+                    state["response"] = "Not connected to openBIS. Please connect first."
+                    return state
+
+                pybis_instance = self.tool_manager.connection.openbis
+
+                # Execute the actions
+                results = self.pybis_adapter.execute_actions(
+                    state["action_request"],
+                    pybis_instance
+                )
+
+                state["execution_results"] = results
+                logger.info(f"Executed {len(results)} actions successfully")
+                return state
+
+            except Exception as e:
+                logger.error(f"Error in execute_interaction: {e}")
+                state["response"] = f"Error executing actions: {str(e)}"
+                return state
+
+        def report_result(state: ConversationState) -> ConversationState:
+            """Format and report the execution results."""
+            try:
+                results = state.get("execution_results", [])
+
+                if not results:
+                    state["response"] = "No execution results available."
+                    return state
+
+                # Format results for user
+                response_parts = ["## Execution Results", ""]
+
+                success_count = sum(1 for r in results if r.get("success", False))
+                total_count = len(results)
+
+                if success_count == total_count:
+                    response_parts.append(f"✅ Successfully completed all {total_count} actions:")
+                else:
+                    response_parts.append(f"⚠️ Completed {success_count}/{total_count} actions:")
+
+                response_parts.append("")
+
+                for i, result in enumerate(results, 1):
+                    if result.get("success"):
+                        action = result.get("action", "ACTION")
+                        entity = result.get("entity", "ENTITY")
+                        message = result.get("message", "Completed successfully")
+
+                        if "permId" in result:
+                            response_parts.append(f"{i}. ✅ {action} {entity}: {message} (ID: {result['permId']})")
+                        elif "identifier" in result:
+                            response_parts.append(f"{i}. ✅ {action} {entity}: {message} (ID: {result['identifier']})")
+                        else:
+                            response_parts.append(f"{i}. ✅ {action} {entity}: {message}")
+
+                        # Add data for GET operations
+                        if result.get("data"):
+                            data = result["data"]
+                            if isinstance(data, list):
+                                response_parts.append(f"   Found {len(data)} items")
+                            elif isinstance(data, dict) and "payload" in data:
+                                payload = data["payload"]
+                                if payload.get("code"):
+                                    response_parts.append(f"   Code: {payload['code']}")
+                                if payload.get("type"):
+                                    response_parts.append(f"   Type: {payload['type']}")
+                    else:
+                        error = result.get("error", "Unknown error")
+                        response_parts.append(f"{i}. ❌ Failed: {error}")
+
+                    response_parts.append("")
+
+                state["response"] = "\n".join(response_parts)
+                return state
+
+            except Exception as e:
+                logger.error(f"Error in report_result: {e}")
+                state["response"] = f"Error formatting results: {str(e)}"
+                return state
+
         # Build the graph
         workflow = StateGraph(ConversationState)
 
@@ -540,14 +741,51 @@ REASON: explanation why no tool is suitable"""
         workflow.add_node("format_response", format_response)
         workflow.add_node("update_conversation", update_conversation)
 
-        # Add conditional routing function
+        # Add structured interaction nodes
+        workflow.add_node("structure_request", structure_request)
+        workflow.add_node("present_for_confirmation", present_for_confirmation)
+        workflow.add_node("execute_interaction", execute_interaction)
+        workflow.add_node("report_result", report_result)
+
+        # Add conditional routing functions
         def route_decision(state: ConversationState) -> str:
             """Route based on the router's decision."""
             decision = state.get("decision", "rag")
             if decision == "function_call":
                 return "function_calling_agent"
+            elif decision == "structured_interaction":
+                return "structure_request"
             else:
                 return "rag_agent"
+
+        def decide_on_confirmation(state: ConversationState) -> str:
+            """Decide if confirmation is needed based on action types."""
+            action_request = state.get("action_request", {})
+            actions = action_request.get("actions", [])
+
+            # Check if any action is destructive (CREATE, UPDATE, DELETE)
+            destructive_actions = {"CREATE", "UPDATE", "DELETE"}
+            has_destructive = any(action.get("action") in destructive_actions for action in actions)
+
+            if has_destructive:
+                return "present_for_confirmation"
+            else:
+                return "execute_interaction"
+
+        def await_confirmation(state: ConversationState) -> str:
+            """Handle user confirmation response."""
+            # This would be called in a real interactive scenario
+            # For now, we'll assume the user wants to proceed
+            # In a real implementation, this would check the user's response
+            user_response = state.get("user_confirmation", "").lower().strip()
+
+            if user_response in ["yes", "y", "proceed", "continue", "ok", "confirm"]:
+                return "execute_interaction"
+            elif user_response in ["no", "n", "cancel", "stop", "abort"]:
+                return "format_response"  # Skip to formatting with cancellation message
+            else:
+                # For corrections or modifications, go back to structuring
+                return "structure_request"
 
         # Add edges
         workflow.set_entry_point("router")
@@ -556,11 +794,32 @@ REASON: explanation why no tool is suitable"""
             route_decision,
             {
                 "rag_agent": "rag_agent",
-                "function_calling_agent": "function_calling_agent"
+                "function_calling_agent": "function_calling_agent",
+                "structure_request": "structure_request"
             }
         )
+
+        # Traditional workflow edges
         workflow.add_edge("rag_agent", "format_response")
         workflow.add_edge("function_calling_agent", "format_response")
+
+        # Structured interaction workflow edges
+        workflow.add_conditional_edges(
+            "structure_request",
+            decide_on_confirmation,
+            {
+                "present_for_confirmation": "present_for_confirmation",
+                "execute_interaction": "execute_interaction"
+            }
+        )
+
+        # For now, we'll automatically proceed after confirmation presentation
+        # In a real interactive system, this would wait for user input
+        workflow.add_edge("present_for_confirmation", "execute_interaction")
+        workflow.add_edge("execute_interaction", "report_result")
+        workflow.add_edge("report_result", "format_response")
+
+        # Final edges
         workflow.add_edge("format_response", "update_conversation")
         workflow.add_edge("update_conversation", END)
 
