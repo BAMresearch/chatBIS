@@ -1,0 +1,27 @@
+{
+  "actions": [
+    {
+      "action": "GET",
+      "entity": "OBJECT",
+      "location": {
+        "space": "MY_SPACE",
+        "project": "MY_PROJECT",
+        "experiment": "MY_EXPERIMENT_01",
+        "path": "/MY_SPACE/MY_PROJECT/MY_EXPERIMENT_01"
+      },
+      "properties": ["name", "description"],
+      "attributes": {
+        "parents": "TRUE",
+        "children": "TRUE",
+        "limit": 3
+      },
+      "payload": {
+        "code": "",
+        "type": "",
+        "properties": {},
+        "parents": [],
+        "children": []
+      }
+    }
+  ]
+}
