@@ -1,0 +1,92 @@
+site_name: chatBIS
+site_url: https://bamresearch.github.io/chatBIS/
+repo_url: https://github.com/BAMresearch/chatBIS
+repo_name: BAMresearch/chatBIS
+
+theme:
+  name: material
+  palette:
+    primary: custom
+    accent: custom
+  logo: assets/chatbis_logo.png
+  favicon: assets/chatbis_logo.png
+  features:
+    - navigation.path
+    - navigation.footer
+    - navigation.top
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["src"]
+          options:
+            show_source: false
+            show_if_no_docstring: true
+            members_order: source
+            docstring_style: google
+            allow_inspection: false
+
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed
+  - pymdownx.highlight
+
+nav:
+  - Home: index.md
+  - Tutorials:
+      - Tutorials overview: tutorials/index.md
+      - Getting started: tutorials/getting-started.md
+      - First chat session: tutorials/first-chat-session.md
+      - Use the web UI: tutorials/use-web-ui.md
+      - Multi-agent demo: tutorials/multi-agent-demo.md
+  - How-to Guides:
+      - How-to overview: howtos/index.md
+      - Install locally: howtos/install.md
+      - Run auto mode: howtos/run-auto-mode.md
+      - Scrape only: howtos/scrape-only.md
+      - Process only: howtos/process-only.md
+      - Run CLI with memory: howtos/run-cli-with-memory.md
+      - Continue a session: howtos/continue-session.md
+      - Run web server: howtos/run-web-server.md
+      - Enable pybis tools: howtos/enable-pybis-tools.md
+      - Troubleshoot: howtos/troubleshoot.md
+  - Reference:
+      - Reference overview: reference/index.md
+      - Command line: reference/command-line.md
+      - Configuration: reference/configuration.md
+      - Data layout: reference/data-layout.md
+      - Sessions and memory: reference/sessions-and-memory.md
+      - API:
+          - API overview: reference/api/index.md
+          - Scraper: reference/api/scraper.md
+          - Processor: reference/api/processor.md
+          - Query: reference/api/query.md
+          - Conversation engine: reference/api/conversation_engine.md
+          - PyBIS tools: reference/api/tools_pybis.md
+          - Web app: reference/api/web.md
+          - Utils: reference/api/utils.md
+  - Explanations:
+      - Explanations overview: explanations/index.md
+      - Overview: explanations/overview.md
+      - Architecture: explanations/architecture.md
+      - RAG and retrieval: explanations/rag-and-retrieval.md
+      - Multi-agent routing: explanations/multi-agent-routing.md
+      - Memory and state: explanations/memory-and-state.md
+      - PyBIS integration: explanations/pybis-integration.md
+      - Security and privacy: explanations/security-and-privacy.md
+
+extra_css:
+  - stylesheets/extra.css
