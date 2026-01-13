@@ -1,6 +1,6 @@
 {
   "action": "GET_ONE" | "LIST" | "GET_TYPE",
-  "entity": "OBJECT" | "COLLECTION" | "DATASET" | "PROJECT" | "SPACE" | "PROPERTY_TYPE" | "SAMPLE_TYPE" | "PROJECT_TYPE" | "VOCABULARY",
+  "entity": "SAMPLE" | "EXPERIMENT" | "DATASET" | "PROJECT" | "SPACE" | "PROPERTY_TYPE" | "SAMPLE_TYPE" | "VOCABULARY",
   "criteria": {
     // For GET_ONE: a unique identifier is required.
     "identifier": "/MY_SPACE/MY_PROJECT/MY_SAMPLE_01", // or a permId
@@ -8,7 +8,6 @@
     // For LIST: a combination of search parameters.
     "space": "MY_SPACE",
     "project": "MY_PROJECT",
-    "collection": "MY_COLLECTION",
     "type": "YEAST",
     "withParents": ["/MY_SPACE/PARENT_SAMPLE"],
     "where": {
